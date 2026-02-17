@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Coffee } from "lucide-react";
+import { Coffee, ShieldCheck, ShieldAlert, Loader2 } from "lucide-react";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -15,6 +15,14 @@ export default function LoginPage() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const [dbStatus, setDbStatus] = useState<"checking" | "up" | "down">("checking");
+
+    useEffect(() => {
+        fetch("/api/ping")
+            .then(res => res.json())
+            .then(data => setDbStatus(data.status === "connected" ? "up" : "down"))
+            .catch(() => setDbStatus("down"));
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -59,9 +67,17 @@ export default function LoginPage() {
                         <Coffee className="h-8 w-8 text-primary" />
                     </div>
                     <CardTitle className="text-2xl font-bold">Admin Login</CardTitle>
-                    <p className="text-sm text-muted-foreground">
-                        Sign in to manage prices and users
-                    </p>
+                    <div className="flex justify-center items-center gap-2 mt-1">
+                        <div className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider transition-colors ${dbStatus === 'up' ? 'bg-green-100 text-green-700' :
+                                dbStatus === 'down' ? 'bg-red-100 text-red-700' :
+                                    'bg-amber-100 text-amber-700'
+                            }`}>
+                            {dbStatus === 'checking' && <Loader2 className="h-2.5 w-2.5 animate-spin" />}
+                            {dbStatus === 'up' && <ShieldCheck className="h-2.5 w-2.5" />}
+                            {dbStatus === 'down' && <ShieldAlert className="h-2.5 w-2.5" />}
+                            {dbStatus === 'up' ? 'DB Connected' : dbStatus === 'down' ? 'DB Offline' : 'Checking DB...'}
+                        </div>
+                    </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <form onSubmit={handleSubmit} className="space-y-4">
