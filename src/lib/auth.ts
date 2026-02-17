@@ -13,6 +13,10 @@ export const authOptions: NextAuthOptions = {
         signIn: "/login",
     },
     secret: process.env.NEXTAUTH_SECRET,
+    // Add debugging for Vercel
+    ...(process.env.NODE_ENV === "production" && !process.env.NEXTAUTH_SECRET && (
+        console.error("CRITICAL: NEXTAUTH_SECRET is not set in Vercel environment variables!") as any
+    )),
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID || "",

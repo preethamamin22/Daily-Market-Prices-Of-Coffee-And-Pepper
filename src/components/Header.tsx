@@ -5,7 +5,12 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 
 export async function Header() {
-    const session = await getServerSession(authOptions);
+    let session = null;
+    try {
+        session = await getServerSession(authOptions);
+    } catch (e) {
+        console.error("Header Authentication Error:", e);
+    }
     const isAdmin = (session?.user as any)?.role === "ADMIN";
 
     return (
