@@ -29,6 +29,7 @@ export const authOptions: NextAuthOptions = {
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
+                console.log("Auth attempt for:", credentials?.email);
                 const parsedCredentials = z
                     .object({ email: z.string().email(), password: z.string().min(6) })
                     .safeParse(credentials);
@@ -39,10 +40,19 @@ export const authOptions: NextAuthOptions = {
                         where: { email },
                     });
 
-                    if (!user || !user.password) return null;
+                    if (!user) {
+                        console.warn("Auth failed: User not found", email);
+                        return null;
+                    }
+
+                    if (!user.password) {
+                        console.warn("Auth failed: User has no password set", email);
+                        return null;
+                    }
 
                     const passwordsMatch = await bcrypt.compare(password, user.password);
                     if (passwordsMatch) {
+                        console.log("Auth success for:", email);
                         // Update login analytics
                         await prisma.user.update({
                             where: { id: user.id },
@@ -59,7 +69,11 @@ export const authOptions: NextAuthOptions = {
                             role: user.role,
                             image: user.image,
                         };
+                    } else {
+                        console.warn("Auth failed: Password mismatch for", email);
                     }
+                } else {
+                    console.warn("Auth failed: Invalid credentials format", parsedCredentials.error);
                 }
 
                 return null;
