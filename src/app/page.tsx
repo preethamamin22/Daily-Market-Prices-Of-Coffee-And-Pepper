@@ -155,7 +155,10 @@ export default async function Home() {
 
       <footer className="border-t py-6 bg-background">
         <div className="container text-center text-sm text-muted-foreground">
-          &copy; {new Date().getFullYear()} Coffee & Pepper Price Tracker. All rights reserved.
+          <p>&copy; {new Date().getFullYear()} Coffee & Pepper Price Tracker. All rights reserved.</p>
+          <p className="mt-2">
+            Created by <a href="https://preethamamin.framer.website/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnq-FqHd1jwdFPLLgbiSYlb5GsSm_Nt8tmSURFDa-tZouVfp3OU5oTTpKa6_k_aem_cKoKzXCgHGODmRRcwMolOw" target="_blank" rel="noopener noreferrer" className="font-semibold hover:text-primary transition-colors">Preetham Amin</a>
+          </p>
         </div>
       </footer>
     </div>

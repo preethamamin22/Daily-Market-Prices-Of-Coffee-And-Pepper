@@ -104,9 +104,12 @@ export default function AboutPage() {
                         </CardContent>
                     </Card>
 
-                    <div className="text-center pt-6 text-sm text-muted-foreground">
+                    <div className="text-center pt-6 text-sm text-muted-foreground border-t">
                         <p>For inquiries or to report data issues, please contact the administrator.</p>
                         <p className="mt-2">© {new Date().getFullYear()} Coffee & Pepper Price Tracker. All rights reserved.</p>
+                        <p className="mt-2 italic">
+                            Created by <a href="https://preethamamin.framer.website/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnq-FqHd1jwdFPLLgbiSYlb5GsSm_Nt8tmSURFDa-tZouVfp3OU5oTTpKa6_k_aem_cKoKzXCgHGODmRRcwMolOw" target="_blank" rel="noopener noreferrer" className="font-semibold hover:text-primary transition-colors not-italic">Preetham Amin</a>
+                        </p>
                     </div>
                 </div>
             </main>
