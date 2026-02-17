@@ -8,14 +8,34 @@ generator client {
 }
 
 model User {
+  id            String    @id @default(cuid())
+  email         String?   @unique
+  password      String?
+  name          String?
+  role          String    @default("USER") // ADMIN, USER
+  phone         String?   @unique
+  
+  // OAuth fields
+  googleId      String?   @unique
+  image         String?
+  
+  // Analytics
+  lastLogin     DateTime?
+  loginCount    Int       @default(0)
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  sessions      Session[]
+}
+
+model Session {
   id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  name      String?
-  role      String   @default("USER") // ADMIN, USER
-  phone     String?  @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ipAddress String?
+  userAgent String?
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model DailyPrice {
@@ -28,4 +48,6 @@ model DailyPrice {
   source    String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([date, commodity, district])
 }
