@@ -57,15 +57,15 @@ async function getPrices() {
       },
     });
 
-    return { prices, prevPrices };
-  } catch (error) {
+    return { prices, prevPrices, error: null };
+  } catch (error: any) {
     console.error("Critical error in getPrices:", error);
-    return { prices: [], prevPrices: [] };
+    return { prices: [], prevPrices: [], error: error.message || "Unknown database error" };
   }
 }
 
 export default async function Home() {
-  const { prices, prevPrices } = await getPrices();
+  const { prices, prevPrices, error } = await getPrices();
 
   // Helper to find previous price
   const getPrevPrice = (commodity: string, district: string) => {
@@ -89,7 +89,19 @@ export default async function Home() {
           </p>
         </div>
 
-        {prices.length === 0 && (
+        {error && (
+          <div className="mb-8 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+            <p className="font-bold flex items-center gap-2 mb-1">
+              ⚠️ Database Connection Warning
+            </p>
+            <p>The application is having trouble connecting to the database. This is usually due to missing Environment Variables on Vercel.</p>
+            <p className="mt-2 p-2 bg-red-100 rounded font-mono text-xs overflow-auto">
+              Error Details: {error}
+            </p>
+          </div>
+        )}
+
+        {prices.length === 0 && !error && (
           <div className="text-center py-12 bg-white rounded-xl shadow-sm border">
             <p className="text-xl text-muted-foreground">No prices updated for today yet.</p>
             <p className="text-sm text-muted-foreground mt-2">Check back later or contact admin.</p>

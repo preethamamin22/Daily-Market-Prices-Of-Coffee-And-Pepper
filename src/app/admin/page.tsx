@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Header } from "@/components/Header";
 import { revalidatePath } from "next/cache";
 import Link from "next/link";
+import { SyncPricesButton } from "@/components/SyncPricesButton";
 
 async function addPrice(formData: FormData) {
     "use server";
@@ -58,19 +59,7 @@ export default async function AdminPage() {
                 <div className="flex justify-between items-center mb-8">
                     <h1 className="text-3xl font-bold">Admin Dashboard</h1>
                     <div className="flex items-center gap-4">
-                        <Button
-                            variant="secondary"
-                            onClick={async () => {
-                                const res = await fetch('/api/prices', { method: 'POST' });
-                                if (res.ok) {
-                                    window.location.reload();
-                                } else {
-                                    alert('Failed to sync live prices');
-                                }
-                            }}
-                        >
-                            Sync Live Prices
-                        </Button>
+                        <SyncPricesButton />
                         <Link href="/admin/users">
                             <Button variant="outline">View User Analytics</Button>
                         </Link>

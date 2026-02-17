@@ -12,7 +12,7 @@ export const authOptions: NextAuthOptions = {
     pages: {
         signIn: "/login",
     },
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.NEXTAUTH_SECRET || "fallback-secret-for-dev-only",
     // Add debugging for Vercel
     ...(process.env.NODE_ENV === "production" && !process.env.NEXTAUTH_SECRET && (
         console.error("CRITICAL: NEXTAUTH_SECRET is not set in Vercel environment variables!") as any
