@@ -7,58 +7,61 @@ import Link from "next/link";
 import { fetchLatestPrices } from "@/lib/scraper";
 
 async function getPrices() {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-  // Get today's prices
-  let prices = await prisma.dailyPrice.findMany({
-    where: {
-      date: {
-        gte: today,
+    // Get today's prices
+    let prices = await prisma.dailyPrice.findMany({
+      where: {
+        date: {
+          gte: today,
+        },
       },
-    },
-    orderBy: {
-      date: "desc",
-    },
-  });
+      orderBy: {
+        date: "desc",
+      },
+    });
 
-  // If no prices for today, try to fetch live
-  if (prices.length === 0) {
-    try {
-      const livePrices = await fetchLatestPrices();
-      // Transform scraper output to match DailyPrice model structure for immediate display
-      const transformedLive = livePrices.map(p => ({
-        id: `live-${p.commodity}-${p.district}`,
-        ...p,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }));
-      // @ts-ignore - we're using this for display only
-      prices = transformedLive;
-    } catch (e) {
-      console.error("Failed to fetch live prices:", e);
+    // If no prices for today, try to fetch live
+    if (prices.length === 0) {
+      try {
+        const livePrices = await fetchLatestPrices();
+        const transformedLive = livePrices.map(p => ({
+          id: `live-${p.commodity}-${p.district}`,
+          ...p,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        }));
+        // @ts-ignore
+        prices = transformedLive;
+      } catch (e) {
+        console.error("Failed to fetch live prices:", e);
+      }
     }
-  }
 
-  // Get yesterday's prices for trend comparison
-  const yesterday = new Date(today);
-  yesterday.setDate(yesterday.getDate() - 1);
-  const endOfYesterday = new Date(today);
+    // Get yesterday's prices for trend comparison
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const endOfYesterday = new Date(today);
 
-  const prevPrices = await prisma.dailyPrice.findMany({
-    where: {
-      date: {
-        gte: yesterday,
-        lt: endOfYesterday,
+    const prevPrices = await prisma.dailyPrice.findMany({
+      where: {
+        date: {
+          gte: yesterday,
+          lt: endOfYesterday,
+        },
       },
-      // In case multiple updates, take the latest
-    },
-    orderBy: {
-      date: "desc",
-    },
-  });
+      orderBy: {
+        date: "desc",
+      },
+    });
 
-  return { prices, prevPrices };
+    return { prices, prevPrices };
+  } catch (error) {
+    console.error("Critical error in getPrices:", error);
+    return { prices: [], prevPrices: [] };
+  }
 }
 
 export default async function Home() {
@@ -67,7 +70,7 @@ export default async function Home() {
   // Helper to find previous price
   const getPrevPrice = (commodity: string, district: string) => {
     return prevPrices.find(
-      (p) => p.commodity === commodity && p.district === district
+      (p: any) => p.commodity === commodity && p.district === district
     )?.price;
   };
 

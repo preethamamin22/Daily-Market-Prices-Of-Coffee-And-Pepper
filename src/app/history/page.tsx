@@ -8,26 +8,31 @@ import Link from "next/link";
 import { startOfDay, subDays } from "date-fns";
 
 async function getHistoryData(commodity: string, district: string, days: number = 30) {
-    const startDate = startOfDay(subDays(new Date(), days));
+    try {
+        const startDate = startOfDay(subDays(new Date(), days));
 
-    const entries = await prisma.dailyPrice.findMany({
-        where: {
-            commodity,
-            district,
-            date: {
-                gte: startDate,
+        const entries = await prisma.dailyPrice.findMany({
+            where: {
+                commodity,
+                district,
+                date: {
+                    gte: startDate,
+                },
             },
-        },
-        orderBy: {
-            date: "asc",
-        },
-    });
+            orderBy: {
+                date: "asc",
+            },
+        });
 
-    return entries.map((e: any) => ({
-        date: e.date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }),
-        price: e.price,
-        timestamp: e.date.getTime(),
-    }));
+        return entries.map((e: any) => ({
+            date: e.date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }),
+            price: e.price,
+            timestamp: e.date.getTime(),
+        }));
+    } catch (error) {
+        console.error("History Data Fetch Error:", error);
+        return [];
+    }
 }
 
 export default async function HistoryPage(props: {
