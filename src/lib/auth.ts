@@ -54,13 +54,17 @@ export const authOptions: NextAuthOptions = {
                     if (passwordsMatch) {
                         console.log("Auth success for:", email);
                         // Update login analytics
-                        await prisma.user.update({
-                            where: { id: user.id },
-                            data: {
-                                lastLogin: new Date(),
-                                loginCount: { increment: 1 },
-                            },
-                        });
+                        try {
+                            await prisma.user.update({
+                                where: { id: user.id },
+                                data: {
+                                    lastLogin: new Date(),
+                                    loginCount: { increment: 1 },
+                                },
+                            });
+                        } catch (err) {
+                            console.error("Failed to update user analytics:", err);
+                        }
 
                         return {
                             id: user.id,
@@ -70,10 +74,10 @@ export const authOptions: NextAuthOptions = {
                             image: user.image,
                         };
                     } else {
-                        console.warn("Auth failed: Password mismatch for", email);
+                        throw new Error("PASSWORD_INCORRECT");
                     }
                 } else {
-                    console.warn("Auth failed: Invalid credentials format", parsedCredentials.error);
+                    throw new Error("INVALID_INPUT");
                 }
 
                 return null;
