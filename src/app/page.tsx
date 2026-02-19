@@ -1,10 +1,9 @@
 export const dynamic = 'force-dynamic';
 import { Header } from "@/components/Header";
-import { PriceCard } from "@/components/PriceCard";
 import { prisma } from "@/lib/db";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { fetchLatestPrices } from "@/lib/scraper";
+import { PriceList } from "@/components/PriceList";
+import * as motion from "framer-motion/client";
 
 async function getPrices() {
   try {
@@ -67,27 +66,23 @@ async function getPrices() {
 export default async function Home() {
   const { prices, prevPrices, error } = await getPrices();
 
-  // Helper to find previous price
-  const getPrevPrice = (commodity: string, district: string) => {
-    return prevPrices.find(
-      (p: any) => p.commodity === commodity && p.district === district
-    )?.price;
-  };
-
-  const kodaguPrices = prices.filter((p: any) => p.district === "KODAGU");
-  const hassanPrices = prices.filter((p: any) => p.district === "HASSAN");
-
   return (
-    <div className="min-h-screen bg-muted/10 pb-10">
+    <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-background to-background pb-20">
       <Header />
 
-      <main className="container px-4 py-8">
-        <div className="text-center mb-10 space-y-2">
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">Daily Market Prices</h1>
-          <p className="text-muted-foreground text-lg">
-            Latest Coffee and Pepper prices from Kodagu and Hassan markets.
+      <main className="container px-4 py-12 max-w-7xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-16 space-y-4"
+        >
+          <h1 className="text-4xl md:text-6xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-amber-600 outline-none">
+            Daily Market Prices
+          </h1>
+          <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto font-medium">
+            Real-time Coffee and Pepper rates from the heart of Karnataka.
           </p>
-        </div>
+        </motion.div>
 
         {error && (
           <div className="mb-8 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
@@ -108,49 +103,7 @@ export default async function Home() {
           </div>
         )}
 
-        {kodaguPrices.length > 0 && (
-          <div className="mb-10">
-            <h2 className="text-2xl font-bold mb-4 border-b pb-2 flex items-center gap-2">
-              <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">District</span>
-              Kodagu
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {kodaguPrices.map((p: any) => (
-                <PriceCard
-                  key={p.id}
-                  commodity={p.commodity}
-                  district={p.district}
-                  price={p.price}
-                  unit={p.unit}
-                  date={p.date}
-                  previousPrice={getPrevPrice(p.commodity, p.district)}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {hassanPrices.length > 0 && (
-          <div>
-            <h2 className="text-2xl font-bold mb-4 border-b pb-2 flex items-center gap-2">
-              <span className="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm">District</span>
-              Hassan
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {hassanPrices.map((p: any) => (
-                <PriceCard
-                  key={p.id}
-                  commodity={p.commodity}
-                  district={p.district}
-                  price={p.price}
-                  unit={p.unit}
-                  date={p.date}
-                  previousPrice={getPrevPrice(p.commodity, p.district)}
-                />
-              ))}
-            </div>
-          </div>
-        )}
+        <PriceList initialPrices={prices} prevPrices={prevPrices} />
       </main>
 
       <footer className="border-t py-6 bg-background">

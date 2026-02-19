@@ -1,38 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-
-// In a real app, this would be a separate microservice or scheduled task
-// Here we mock fetching from an external source
-
-async function fetchExternalPrices() {
-    // Mock logic: generate random prices around a base
-    const basePrices = {
-        COFFEE_ARABICA: 16000,
-        COFFEE_ROBUSTA: 9500,
-        PEPPER: 520,
-    };
-
-    const volatility = 0.02; // 2% fluctuation
-
-    const updates = [];
-
-    for (const district of ["KODAGU", "HASSAN"]) {
-        for (const [commodity, base] of Object.entries(basePrices)) {
-            const change = (Math.random() * volatility * 2 - volatility) * base;
-            const price = Math.round(base + change);
-
-            updates.push({
-                commodity,
-                district,
-                price,
-                unit: commodity === "PEPPER" ? "KG" : "50KG",
-                source: "Auto-Fetch (Mock)",
-            });
-        }
-    }
-
-    return updates;
-}
+import { fetchLatestPrices } from "@/lib/scraper";
 
 export async function GET(request: Request) {
     // Check for a secret token in headers (simple security for cron)
@@ -42,12 +10,9 @@ export async function GET(request: Request) {
     }
 
     try {
-        const newPrices = await fetchExternalPrices();
+        console.log("Starting automated price update...");
+        const newPrices = await fetchLatestPrices();
 
-        // Check if we already have prices for today to avoid duplicates?
-        // Or just add them. For now, let's just add them.
-
-        // Actually, good practice: Check if exists for today
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
@@ -65,7 +30,11 @@ export async function GET(request: Request) {
             if (!existing) {
                 const result = await prisma.dailyPrice.create({
                     data: {
-                        ...p,
+                        commodity: p.commodity,
+                        district: p.district,
+                        price: p.price,
+                        unit: p.unit,
+                        source: p.source,
                         date: new Date(),
                     },
                 });
@@ -73,7 +42,16 @@ export async function GET(request: Request) {
             }
         }
 
-        return NextResponse.json({ success: true, added: created.length, data: created });
+        console.log(`Cron update complete. Added ${created.length} prices.`);
+        return NextResponse.json({
+            success: true,
+            added: created.length,
+            data: created.map(c => ({
+                commodity: c.commodity,
+                district: c.district,
+                price: c.price
+            }))
+        });
     } catch (error) {
         console.error("Cron failed:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
