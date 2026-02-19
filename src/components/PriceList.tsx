@@ -24,9 +24,24 @@ export function PriceList({ initialPrices, prevPrices }: PriceListProps) {
     const kodaguPrices = filteredPrices.filter((p: PriceData) => p.district === "KODAGU");
     const hassanPrices = filteredPrices.filter((p: PriceData) => p.district === "HASSAN");
 
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.2
+            }
+        }
+    };
+
     return (
         <div className="space-y-16">
-            <div className="relative max-w-sm mx-auto">
+            <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="relative max-w-sm mx-auto"
+            >
                 <div className="relative group">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground/50 transition-colors group-focus-within:text-primary" />
                     <Input
@@ -45,12 +60,12 @@ export function PriceList({ initialPrices, prevPrices }: PriceListProps) {
                         </button>
                     )}
                 </div>
-            </div>
+            </motion.div>
 
             {filteredPrices.length === 0 && (
                 <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
                     className="text-center py-20 border border-dashed border-muted rounded-xl"
                 >
                     <p className="text-sm text-muted-foreground">No matches for &quot;{searchQuery}&quot;</p>
@@ -63,19 +78,20 @@ export function PriceList({ initialPrices, prevPrices }: PriceListProps) {
                 </motion.div>
             )}
 
-            <AnimatePresence mode="popLayout">
+            <AnimatePresence mode="popLayout" initial={false}>
                 {kodaguPrices.length > 0 && (
                     <motion.div
                         key="kodagu"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit={{ opacity: 0, transition: { duration: 0.2 } }}
                         className="space-y-6"
                     >
                         <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 px-1 border-b border-muted/30 pb-2">
                             Kodagu District
                         </h2>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                             {kodaguPrices.map((p: PriceData) => (
                                 <PriceCard
                                     key={p.id}
@@ -87,22 +103,23 @@ export function PriceList({ initialPrices, prevPrices }: PriceListProps) {
                                     previousPrice={getPrevPrice(p.commodity, p.district)}
                                 />
                             ))}
-                        </div>
+                        </motion.div>
                     </motion.div>
                 )}
 
                 {hassanPrices.length > 0 && (
                     <motion.div
                         key="hassan"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit={{ opacity: 0, transition: { duration: 0.2 } }}
                         className="space-y-6 pt-8"
                     >
                         <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 px-1 border-b border-muted/30 pb-2">
                             Hassan District
                         </h2>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                             {hassanPrices.map((p: PriceData) => (
                                 <PriceCard
                                     key={p.id}
@@ -114,7 +131,7 @@ export function PriceList({ initialPrices, prevPrices }: PriceListProps) {
                                     previousPrice={getPrevPrice(p.commodity, p.district)}
                                 />
                             ))}
-                        </div>
+                        </motion.div>
                     </motion.div>
                 )}
             </AnimatePresence>

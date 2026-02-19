@@ -24,37 +24,45 @@ export function Header() {
 
     return (
         <>
-            <header
-                className={`sticky top-0 z-[100] w-full transition-all duration-300 ${isScrolled
-                    ? "bg-background/80 backdrop-blur-md border-b border-muted py-2"
-                    : "bg-transparent py-6"
+            <motion.header
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                className={`sticky top-0 z-[100] w-full transition-all duration-500 ease-in-out ${isScrolled
+                    ? "bg-background/80 backdrop-blur-xl border-b border-muted/50 py-3 shadow-[0_2px_20px_rgba(0,0,0,0.02)]"
+                    : "bg-transparent py-7"
                     }`}
             >
-                <div className="container flex h-12 items-center justify-between px-6 max-w-7xl mx-auto">
+                <div className="container flex h-10 items-center justify-between px-6 max-w-7xl mx-auto">
                     <Link className="flex items-center gap-2 group" href="/">
-                        <div className="w-1.5 h-6 bg-primary rounded-full group-hover:scale-y-110 transition-transform" />
-                        <span className="font-bold text-lg tracking-tight uppercase">Market Prices</span>
+                        <motion.div
+                            whileHover={{ height: 28 }}
+                            className="w-1.5 h-6 bg-primary rounded-full transition-all ease-out"
+                        />
+                        <span className="font-bold text-base tracking-tight uppercase">Market Prices</span>
                     </Link>
 
-                    <nav className="hidden md:flex items-center gap-8">
+                    <nav className="hidden md:flex items-center gap-10">
                         {navLinks.map((link) => (
                             <Link
                                 key={link.href}
-                                className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors relative group"
+                                className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 hover:text-primary transition-all relative group"
                                 href={link.href}
                             >
                                 {link.label}
-                                <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all group-hover:w-full" />
+                                <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] bg-primary transition-all duration-300 group-hover:w-full" />
                             </Link>
                         ))}
                     </nav>
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-6">
                         <Link href="/login" className="hidden sm:block">
-                            <span className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors flex items-center gap-1.5">
+                            <motion.span
+                                whileHover={{ x: 2 }}
+                                className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 hover:text-primary transition-colors flex items-center gap-2"
+                            >
                                 <User className="h-3.5 w-3.5" />
                                 Admin
-                            </span>
+                            </motion.span>
                         </Link>
 
                         <button
@@ -65,7 +73,7 @@ export function Header() {
                         </button>
                     </div>
                 </div>
-            </header>
+            </motion.header>
 
             <AnimatePresence>
                 {isMobileMenuOpen && (

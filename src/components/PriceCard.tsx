@@ -18,15 +18,28 @@ export function PriceCard({ commodity, district, price, unit, date, previousPric
     const trend = previousPrice ? (price > previousPrice ? "up" : price < previousPrice ? "down" : "steady") : "steady";
     const formattedCommodity = commodity.replace("_", " ");
 
+    const itemVariants = {
+        hidden: { opacity: 0, y: 15 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                type: "spring" as const,
+                stiffness: 100,
+                damping: 20
+            }
+        }
+    };
+
     return (
         <motion.div
+            variants={itemVariants}
             layout
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            whileHover={{ y: -2 }}
+            whileHover={{ y: -4, transition: { duration: 0.2 } }}
+            whileTap={{ scale: 0.98 }}
             className="group"
         >
-            <Card className="overflow-hidden border border-muted bg-background shadow-none hover:border-primary/20 transition-all duration-200">
+            <Card className="overflow-hidden border border-muted bg-background shadow-none group-hover:border-primary/20 group-hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300">
                 <CardContent className="p-5">
                     <div className="flex justify-between items-start mb-6">
                         <div className="space-y-0.5">
@@ -37,8 +50,8 @@ export function PriceCard({ commodity, district, price, unit, date, previousPric
                             <h3 className="text-lg font-bold capitalize tracking-tight">{formattedCommodity.toLowerCase()}</h3>
                         </div>
                         <div className={`text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 ${trend === "up" ? "text-green-600" :
-                                trend === "down" ? "text-red-600" :
-                                    "text-muted-foreground/60"
+                            trend === "down" ? "text-red-600" :
+                                "text-muted-foreground/60"
                             }`}>
                             {trend === "up" && <ArrowUpIcon className="h-3 w-3" />}
                             {trend === "down" && <ArrowDownIcon className="h-3 w-3" />}

@@ -71,6 +71,8 @@ async function getPrices(): Promise<{ prices: PriceData[]; prevPrices: PriceData
   }
 }
 
+import { SmoothWrapper } from "@/components/SmoothWrapper";
+
 export default async function Home() {
   const { prices, prevPrices, error } = await getPrices();
 
@@ -78,25 +80,27 @@ export default async function Home() {
     <main className="min-h-screen bg-background">
       <Header />
 
-      <div className="container px-6 py-12 md:py-24 max-w-7xl mx-auto">
-        <header className="mb-20 max-w-2xl">
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tighter mb-4">
-            Today&apos;s Market.
-          </h1>
-          <p className="text-muted-foreground text-sm uppercase tracking-widest font-bold">
-            Live price tracking for Kodagu & Hassan districts.
-          </p>
-        </header>
+      <SmoothWrapper>
+        <div className="container px-6 py-12 md:py-24 max-w-7xl mx-auto">
+          <header className="mb-20 max-w-2xl">
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tighter mb-4">
+              Today&apos;s Market.
+            </h1>
+            <p className="text-muted-foreground text-sm uppercase tracking-widest font-bold">
+              Live price tracking for Kodagu & Hassan districts.
+            </p>
+          </header>
 
-        {error ? (
-          <div className="p-12 border border-destructive/20 bg-destructive/5 rounded-xl text-center">
-            <p className="text-destructive font-bold uppercase tracking-widest text-[10px] mb-2">Error connecting to database</p>
-            <p className="text-sm text-muted-foreground">{error}</p>
-          </div>
-        ) : (
-          <PriceList initialPrices={prices} prevPrices={prevPrices} />
-        )}
-      </div>
+          {error ? (
+            <div className="p-12 border border-destructive/20 bg-destructive/5 rounded-xl text-center">
+              <p className="text-destructive font-bold uppercase tracking-widest text-[10px] mb-2">Error connecting to database</p>
+              <p className="text-sm text-muted-foreground">{error}</p>
+            </div>
+          ) : (
+            <PriceList initialPrices={prices} prevPrices={prevPrices} />
+          )}
+        </div>
+      </SmoothWrapper>
 
       <footer className="container px-6 py-20 border-t border-muted mt-20 max-w-7xl mx-auto text-center md:text-left">
         <div className="flex flex-col md:flex-row justify-between items-center gap-8">
