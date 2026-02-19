@@ -68,21 +68,21 @@ export default async function HistoryPage(props: {
                     <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                         {/* Sidebar Filters */}
                         <div className="lg:col-span-1 space-y-6">
-                            <Card className="shadow-sm">
-                                <CardHeader>
-                                    <CardTitle className="text-lg">Filter Data</CardTitle>
+                            <Card className="shadow-sm border-border bg-card">
+                                <CardHeader className="pb-3 px-6 pt-6">
+                                    <CardTitle className="text-xs font-black uppercase tracking-[0.2em] text-foreground/40">Market Filters</CardTitle>
                                 </CardHeader>
-                                <CardContent className="space-y-6">
-                                    <div className="space-y-3">
-                                        <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Commodity</label>
+                                <CardContent className="space-y-6 px-6 pb-6">
+                                    <div className="space-y-4">
+                                        <label className="text-[10px] font-bold text-primary uppercase tracking-[0.1em]">Commodity</label>
                                         <div className="flex flex-col gap-2">
                                             {["COFFEE_ARABICA", "COFFEE_ROBUSTA", "PEPPER"].map((c) => (
                                                 <Link
                                                     key={c}
                                                     href={`/history?commodity=${c}&district=${district}`}
-                                                    className={`text-sm px-4 py-2.5 rounded-lg transition-all duration-200 border ${commodity === c
+                                                    className={`text-[11px] font-bold px-4 py-3 rounded-xl transition-all duration-300 border ${commodity === c
                                                         ? "bg-primary text-primary-foreground shadow-md border-primary"
-                                                        : "bg-white hover:bg-muted border-transparent"
+                                                        : "bg-background hover:bg-muted border-border text-foreground/60"
                                                         }`}
                                                 >
                                                     {c.replace("_", " ")}
@@ -91,16 +91,16 @@ export default async function HistoryPage(props: {
                                         </div>
                                     </div>
 
-                                    <div className="space-y-3">
-                                        <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">District</label>
+                                    <div className="space-y-4">
+                                        <label className="text-[10px] font-bold text-primary uppercase tracking-[0.1em]">District</label>
                                         <div className="flex flex-col gap-2">
                                             {["KODAGU", "HASSAN"].map((d) => (
                                                 <Link
                                                     key={d}
                                                     href={`/history?commodity=${commodity}&district=${d}`}
-                                                    className={`text-sm px-4 py-2.5 rounded-lg transition-all duration-200 border ${district === d
+                                                    className={`text-[11px] font-bold px-4 py-3 rounded-xl transition-all duration-300 border ${district === d
                                                         ? "bg-primary text-primary-foreground shadow-md border-primary"
-                                                        : "bg-white hover:bg-muted border-transparent"
+                                                        : "bg-background hover:bg-muted border-border text-foreground/60"
                                                         }`}
                                                 >
                                                     {d}
@@ -111,13 +111,13 @@ export default async function HistoryPage(props: {
                                 </CardContent>
                             </Card>
 
-                            <Card className="bg-primary/5 border-primary/10">
-                                <CardContent className="pt-6 space-y-2">
-                                    <div className="flex items-center gap-2 text-primary font-bold">
-                                        <Info className="h-4 w-4" />
-                                        <span>Did you know?</span>
+                            <Card className="bg-primary/5 border-primary/5 shadow-none">
+                                <CardContent className="pt-6 space-y-3">
+                                    <div className="flex items-center gap-2 text-primary font-black text-[10px] uppercase tracking-widest">
+                                        <Info className="h-3.5 w-3.5" />
+                                        <span>Market Insight</span>
                                     </div>
-                                    <p className="text-xs text-muted-foreground leading-relaxed">
+                                    <p className="text-[11px] text-foreground/50 leading-relaxed font-medium">
                                         Coffee prices in Kodagu often follow international market trends from Brazil and Vietnam, while local factors like monsoon affect Pepper yields.
                                     </p>
                                 </CardContent>
@@ -134,27 +134,27 @@ export default async function HistoryPage(props: {
                             />
 
                             <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <Card>
+                                <Card className="border-l-4 border-l-green-600 shadow-sm">
                                     <CardContent className="pt-6">
-                                        <p className="text-sm text-muted-foreground">Highest Price</p>
-                                        <p className="text-2xl font-bold text-green-600">
-                                            ₹{data.length > 0 ? Math.max(...data.map((d) => d.price)) : 0}
+                                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40 mb-1">Highest Price</p>
+                                        <p className="text-3xl font-bold tracking-tighter text-primary">
+                                            ₹{data.length > 0 ? Math.max(...data.map((d) => d.price)).toLocaleString() : 0}
                                         </p>
                                     </CardContent>
                                 </Card>
-                                <Card>
+                                <Card className="border-l-4 border-l-amber-500 shadow-sm">
                                     <CardContent className="pt-6">
-                                        <p className="text-sm text-muted-foreground">Lowest Price</p>
-                                        <p className="text-2xl font-bold text-amber-600">
-                                            ₹{data.length > 0 ? Math.min(...data.map((d) => d.price)) : 0}
+                                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40 mb-1">Lowest Price</p>
+                                        <p className="text-3xl font-bold tracking-tighter text-primary">
+                                            ₹{data.length > 0 ? Math.min(...data.map((d) => d.price)).toLocaleString() : 0}
                                         </p>
                                     </CardContent>
                                 </Card>
-                                <Card>
+                                <Card className="border-l-4 border-l-primary shadow-sm">
                                     <CardContent className="pt-6">
-                                        <p className="text-sm text-muted-foreground">Average Price</p>
-                                        <p className="text-2xl font-bold">
-                                            ₹{data.length > 0 ? (data.reduce((acc, curr) => acc + curr.price, 0) / data.length).toFixed(0) : 0}
+                                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40 mb-1">Average Price</p>
+                                        <p className="text-3xl font-bold tracking-tighter text-primary">
+                                            ₹{data.length > 0 ? (data.reduce((acc, curr) => acc + curr.price, 0) / data.length).toLocaleString(undefined, { maximumFractionDigits: 0 }) : 0}
                                         </p>
                                     </CardContent>
                                 </Card>

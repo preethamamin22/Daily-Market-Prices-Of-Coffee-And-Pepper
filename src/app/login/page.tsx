@@ -62,42 +62,50 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-green-50 to-amber-50 p-4">
+        <div className="flex items-center justify-center min-h-screen bg-background p-4 relative overflow-hidden">
+            {/* Ambient decorative elements */}
+            <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px]" />
+            <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px]" />
+
             <SmoothWrapper>
-                <Card className="w-full max-w-md shadow-xl">
-                    <CardHeader className="text-center space-y-2">
-                        <div className="mx-auto bg-primary/10 p-3 rounded-full w-fit">
-                            <Coffee className="h-8 w-8 text-primary" />
+                <Card className="w-full max-w-md shadow-2xl border-border bg-card/50 backdrop-blur-sm relative z-10">
+                    <CardHeader className="text-center space-y-4 pt-10">
+                        <div className="mx-auto bg-primary/10 p-4 rounded-2xl w-fit">
+                            <Coffee className="h-10 w-10 text-primary" />
                         </div>
-                        <CardTitle className="text-2xl font-bold">Admin Login</CardTitle>
-                        <div className="flex justify-center items-center gap-2 mt-1">
-                            <div className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider transition-colors ${dbStatus === 'up' ? 'bg-green-100 text-green-700' :
-                                dbStatus === 'down' ? 'bg-red-100 text-red-700' :
-                                    'bg-amber-100 text-amber-700'
+                        <div className="space-y-1">
+                            <CardTitle className="text-3xl font-black tracking-tighter text-primary">Admin Access</CardTitle>
+                            <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-foreground/40">Secure Portal</p>
+                        </div>
+                        <div className="flex justify-center items-center gap-2">
+                            <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${dbStatus === 'up' ? 'bg-green-50 text-green-700 border border-green-100' :
+                                dbStatus === 'down' ? 'bg-red-50 text-red-700 border border-red-100' :
+                                    'bg-amber-50 text-amber-700 border border-amber-100'
                                 }`}>
-                                {dbStatus === 'checking' && <Loader2 className="h-2.5 w-2.5 animate-spin" />}
-                                {dbStatus === 'up' && <ShieldCheck className="h-2.5 w-2.5" />}
-                                {dbStatus === 'down' && <ShieldAlert className="h-2.5 w-2.5" />}
-                                {dbStatus === 'up' ? 'DB Connected' : dbStatus === 'down' ? 'DB Offline' : 'Checking DB...'}
+                                {dbStatus === 'checking' && <Loader2 className="h-3 w-3 animate-spin" />}
+                                {dbStatus === 'up' && <ShieldCheck className="h-3 w-3" />}
+                                {dbStatus === 'down' && <ShieldAlert className="h-3 w-3" />}
+                                {dbStatus === 'up' ? 'Connected' : dbStatus === 'down' ? 'Offline' : 'Checking...'}
                             </div>
                         </div>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                        <form onSubmit={handleSubmit} className="space-y-4">
+                    <CardContent className="space-y-6 px-8 pb-10">
+                        <form onSubmit={handleSubmit} className="space-y-5">
                             <div className="space-y-2">
-                                <Label htmlFor="email">Email</Label>
+                                <Label htmlFor="email" className="text-[10px] font-black uppercase tracking-widest text-foreground/40 ml-1">Email</Label>
                                 <Input
                                     id="email"
                                     type="email"
                                     required
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="admin@example.com"
+                                    placeholder="admin@market.com"
                                     disabled={loading}
+                                    className="rounded-xl border-border py-6 font-bold tracking-tight bg-background/50"
                                 />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="password">Password</Label>
+                                <Label htmlFor="password" className="text-[10px] font-black uppercase tracking-widest text-foreground/40 ml-1">Password</Label>
                                 <Input
                                     id="password"
                                     type="password"
@@ -106,11 +114,12 @@ export default function LoginPage() {
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="••••••••"
                                     disabled={loading}
+                                    className="rounded-xl border-border py-6 font-bold tracking-tight bg-background/50"
                                 />
                             </div>
-                            {error && <p className="text-sm text-destructive font-medium">{error}</p>}
-                            <Button type="submit" className="w-full" disabled={loading}>
-                                {loading ? "Signing in..." : "Sign In"}
+                            {error && <p className="text-xs text-destructive font-bold text-center italic">{error}</p>}
+                            <Button type="submit" className="w-full py-6 rounded-xl font-black uppercase tracking-[0.2em] text-[10px] shadow-lg shadow-primary/20" disabled={loading}>
+                                {loading ? "Authorizing..." : "Authenticate"}
                             </Button>
                         </form>
 

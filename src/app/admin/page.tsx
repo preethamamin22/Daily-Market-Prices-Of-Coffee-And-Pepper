@@ -55,56 +55,62 @@ export default async function AdminPage() {
     });
 
     return (
-        <div className="min-h-screen bg-muted/10">
+        <div className="min-h-screen bg-background">
             <Header />
             <SmoothWrapper>
-                <main className="container py-8 px-4">
-                    <div className="flex justify-between items-center mb-8">
-                        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-                        <div className="flex items-center gap-4">
+                <main className="container py-12 px-6 max-w-7xl mx-auto">
+                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+                        <div className="space-y-1">
+                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-foreground/30">Administrative Terminal</p>
+                            <h1 className="text-4xl md:text-5xl font-bold tracking-tighter text-primary">Master Dashboard</h1>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-4">
+                            <div className="bg-primary/5 border border-primary/10 text-primary px-5 py-3 rounded-2xl flex items-center gap-3">
+                                <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                                <span className="text-[11px] font-black uppercase tracking-wider">
+                                    Operator: {(session.user as { name?: string | null }).name || "Admin"}
+                                </span>
+                            </div>
                             <SyncPricesButton />
                             <Link href="/admin/users">
-                                <Button variant="outline">View User Analytics</Button>
+                                <Button variant="outline" className="rounded-xl border-border py-6 px-6 text-[10px] font-black uppercase tracking-widest hover:bg-muted transition-all">User Analytics</Button>
                             </Link>
-                            <div className="bg-primary/10 text-primary px-4 py-2 rounded-lg font-medium">
-                                Welcome, {(session.user as { name?: string | null }).name || "Admin"}
-                            </div>
                         </div>
                     </div>
 
-                    <div className="grid gap-8 md:grid-cols-2">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Add New Price</CardTitle>
+                    <div className="grid gap-10 md:grid-cols-2">
+                        <Card className="border-border shadow-sm rounded-3xl overflow-hidden bg-card/50">
+                            <CardHeader className="p-8 pb-4">
+                                <CardTitle className="text-lg font-bold tracking-tight text-primary">Add New Price Entry</CardTitle>
                             </CardHeader>
-                            <CardContent>
-                                <form action={addPrice} className="space-y-4">
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div className="space-y-2">
-                                            <Label htmlFor="commodity">Commodity</Label>
-                                            <select id="commodity" name="commodity" className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring" required>
+                            <CardContent className="p-8 pt-0">
+                                <form action={addPrice} className="space-y-6">
+                                    <div className="grid grid-cols-2 gap-6">
+                                        <div className="space-y-3">
+                                            <Label htmlFor="commodity" className="text-[10px] font-black uppercase tracking-widest text-foreground/40 ml-1">Commodity</Label>
+                                            <select id="commodity" name="commodity" className="flex h-12 w-full rounded-xl border border-border bg-background px-4 py-2 text-sm font-bold tracking-tight transition-all focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none appearance-none" required>
                                                 <option value="COFFEE_ARABICA">Coffee Arabica</option>
                                                 <option value="COFFEE_ROBUSTA">Coffee Robusta</option>
                                                 <option value="PEPPER">Pepper</option>
                                             </select>
                                         </div>
-                                        <div className="space-y-2">
-                                            <Label htmlFor="district">District</Label>
-                                            <select id="district" name="district" className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring" required>
+                                        <div className="space-y-3">
+                                            <Label htmlFor="district" className="text-[10px] font-black uppercase tracking-widest text-foreground/40 ml-1">District</Label>
+                                            <select id="district" name="district" className="flex h-12 w-full rounded-xl border border-border bg-background px-4 py-2 text-sm font-bold tracking-tight transition-all focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none appearance-none" required>
                                                 <option value="KODAGU">Kodagu</option>
                                                 <option value="HASSAN">Hassan</option>
                                             </select>
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div className="space-y-2">
-                                            <Label htmlFor="price">Price</Label>
-                                            <Input id="price" name="price" type="number" step="0.01" required placeholder="0.00" />
+                                    <div className="grid grid-cols-2 gap-6">
+                                        <div className="space-y-3">
+                                            <Label htmlFor="price" className="text-[10px] font-black uppercase tracking-widest text-foreground/40 ml-1">Price</Label>
+                                            <Input id="price" name="price" type="number" step="0.01" required placeholder="0.00" className="h-12 rounded-xl border-border bg-background font-bold px-4" />
                                         </div>
-                                        <div className="space-y-2">
-                                            <Label htmlFor="unit">Unit</Label>
-                                            <select id="unit" name="unit" className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring" required>
+                                        <div className="space-y-3">
+                                            <Label htmlFor="unit" className="text-[10px] font-black uppercase tracking-widest text-foreground/40 ml-1">Unit</Label>
+                                            <select id="unit" name="unit" className="flex h-12 w-full rounded-xl border border-border bg-background px-4 py-2 text-sm font-bold tracking-tight transition-all focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none appearance-none" required>
                                                 <option value="50KG">50 KG</option>
                                                 <option value="KG">1 KG</option>
                                                 <option value="QUINTAL">Quintal</option>
@@ -112,38 +118,38 @@ export default async function AdminPage() {
                                         </div>
                                     </div>
 
-                                    <div className="space-y-2">
-                                        <Label htmlFor="source">Source (Optional)</Label>
-                                        <Input id="source" name="source" placeholder="Market, APMC, etc." />
+                                    <div className="space-y-3">
+                                        <Label htmlFor="source" className="text-[10px] font-black uppercase tracking-widest text-foreground/40 ml-1">Source (Optional)</Label>
+                                        <Input id="source" name="source" placeholder="Market, APMC, etc." className="h-12 rounded-xl border-border bg-background font-bold px-4" />
                                     </div>
 
-                                    <Button type="submit" className="w-full">Add Price</Button>
+                                    <Button type="submit" className="w-full py-7 rounded-xl font-black uppercase tracking-[0.2em] text-[10px] shadow-lg shadow-primary/20 mt-4">Record New Price</Button>
                                 </form>
                             </CardContent>
                         </Card>
 
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Recent Entries</CardTitle>
+                        <Card className="border-border shadow-sm rounded-3xl overflow-hidden bg-card/50">
+                            <CardHeader className="p-8 pb-4">
+                                <CardTitle className="text-lg font-bold tracking-tight text-primary">Recent Terminal Records</CardTitle>
                             </CardHeader>
-                            <CardContent>
-                                <div className="rounded-md border">
+                            <CardContent className="p-8 pt-0">
+                                <div className="rounded-2xl border border-border overflow-hidden">
                                     <table className="w-full text-sm">
                                         <thead>
-                                            <tr className="border-b bg-muted/50">
-                                                <th className="p-3 text-left font-medium">Date</th>
-                                                <th className="p-3 text-left font-medium">Commodity</th>
-                                                <th className="p-3 text-left font-medium">Price</th>
-                                                <th className="p-3 text-right font-medium">District</th>
+                                            <tr className="border-b border-border bg-primary/5">
+                                                <th className="p-4 text-left text-[10px] font-black uppercase tracking-widest text-primary/60">Date</th>
+                                                <th className="p-4 text-left text-[10px] font-black uppercase tracking-widest text-primary/60">Commodity</th>
+                                                <th className="p-4 text-left text-[10px] font-black uppercase tracking-widest text-primary/60">Value</th>
+                                                <th className="p-4 text-right text-[10px] font-black uppercase tracking-widest text-primary/60">Sector</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {recentPrices.map((p) => (
-                                                <tr key={p.id} className="border-b last:border-0 hover:bg-muted/10 transition-colors">
-                                                    <td className="p-3">{p.date.toLocaleDateString()}</td>
-                                                    <td className="p-3 font-medium">{p.commodity.replace("_", " ")}</td>
-                                                    <td className="p-3">₹{p.price} / {p.unit}</td>
-                                                    <td className="p-3 text-right text-muted-foreground">{p.district}</td>
+                                                <tr key={p.id} className="border-b border-border/50 last:border-0 hover:bg-primary/5 transition-all">
+                                                    <td className="p-4 text-[11px] font-bold text-foreground/40">{p.date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}</td>
+                                                    <td className="p-4 text-[11px] font-black uppercase tracking-tighter text-primary">{p.commodity.replace("_", " ")}</td>
+                                                    <td className="p-4 text-[11px] font-black">₹{p.price.toLocaleString()} <span className="text-[9px] text-foreground/40">/ {p.unit}</span></td>
+                                                    <td className="p-4 text-right text-[10px] font-black uppercase text-foreground/30">{p.district}</td>
                                                 </tr>
                                             ))}
                                             {recentPrices.length === 0 && (

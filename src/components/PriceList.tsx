@@ -40,23 +40,23 @@ export function PriceList({ initialPrices, prevPrices }: PriceListProps) {
             <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="relative max-w-sm mx-auto"
+                className="relative max-w-md mx-auto"
             >
                 <div className="relative group">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground/50 transition-colors group-focus-within:text-primary" />
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-foreground/20 transition-colors group-focus-within:text-primary" />
                     <Input
                         type="text"
-                        placeholder="Search markets..."
-                        className="pl-9 pr-9 py-5 rounded-lg border-muted bg-transparent hover:border-muted-foreground/20 focus:border-primary transition-all shadow-none text-sm"
+                        placeholder="Search specific markets or commodities..."
+                        className="pl-11 pr-11 py-7 rounded-2xl border-border bg-card hover:border-primary/30 focus:border-primary transition-all shadow-sm focus:shadow-md text-sm font-bold tracking-tight placeholder:text-foreground/20 placeholder:font-medium"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
                     {searchQuery && (
                         <button
                             onClick={() => setSearchQuery("")}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-muted rounded-md transition-colors"
+                            className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 hover:bg-muted rounded-xl transition-colors"
                         >
-                            <X className="h-3.5 w-3.5 text-muted-foreground/50" />
+                            <X className="h-4 w-4 text-foreground/30" />
                         </button>
                     )}
                 </div>
@@ -64,16 +64,17 @@ export function PriceList({ initialPrices, prevPrices }: PriceListProps) {
 
             {filteredPrices.length === 0 && (
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
+                    initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="text-center py-20 border border-dashed border-muted rounded-xl"
+                    className="text-center py-24 border border-dashed border-border rounded-3xl bg-primary/5"
                 >
-                    <p className="text-sm text-muted-foreground">No matches for &quot;{searchQuery}&quot;</p>
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-foreground/40 mb-3">No Results Found</p>
+                    <p className="text-sm text-foreground/60 mb-6 font-medium">We couldn&apos;t find any records matching &quot;{searchQuery}&quot;</p>
                     <button
                         onClick={() => setSearchQuery("")}
-                        className="mt-2 text-xs font-bold uppercase tracking-widest text-primary hover:underline"
+                        className="px-6 py-3 bg-primary text-primary-foreground rounded-xl text-[10px] font-black uppercase tracking-[0.2em] hover:opacity-90 transition-opacity"
                     >
-                        Clear Search
+                        Reset Filter
                     </button>
                 </motion.div>
             )}
@@ -86,12 +87,15 @@ export function PriceList({ initialPrices, prevPrices }: PriceListProps) {
                         initial="hidden"
                         animate="visible"
                         exit={{ opacity: 0, transition: { duration: 0.2 } }}
-                        className="space-y-6"
+                        className="space-y-8"
                     >
-                        <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 px-1 border-b border-muted/30 pb-2">
-                            Kodagu District
-                        </h2>
-                        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div className="flex items-center gap-4 px-1">
+                            <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary whitespace-nowrap">
+                                Kodagu Sector
+                            </h2>
+                            <div className="w-full h-[1px] bg-border/50" />
+                        </div>
+                        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
                             {kodaguPrices.map((p: PriceData) => (
                                 <PriceCard
                                     key={p.id}
@@ -114,12 +118,15 @@ export function PriceList({ initialPrices, prevPrices }: PriceListProps) {
                         initial="hidden"
                         animate="visible"
                         exit={{ opacity: 0, transition: { duration: 0.2 } }}
-                        className="space-y-6 pt-8"
+                        className="space-y-8 pt-12"
                     >
-                        <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 px-1 border-b border-muted/30 pb-2">
-                            Hassan District
-                        </h2>
-                        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div className="flex items-center gap-4 px-1">
+                            <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary whitespace-nowrap">
+                                Hassan Sector
+                            </h2>
+                            <div className="w-full h-[1px] bg-border/50" />
+                        </div>
+                        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
                             {hassanPrices.map((p: PriceData) => (
                                 <PriceCard
                                     key={p.id}

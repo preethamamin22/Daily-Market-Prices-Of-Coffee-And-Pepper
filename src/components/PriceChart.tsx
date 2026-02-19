@@ -44,36 +44,41 @@ export function PriceChart({ data, title, district }: PriceChartProps) {
                         <AreaChart data={data}>
                             <defs>
                                 <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#16a34a" stopOpacity={0.3} />
-                                    <stop offset="95%" stopColor="#16a34a" stopOpacity={0} />
+                                    <stop offset="5%" stopColor="oklch(0.6 0.12 150)" stopOpacity={0.15} />
+                                    <stop offset="95%" stopColor="oklch(0.6 0.12 150)" stopOpacity={0} />
                                 </linearGradient>
                             </defs>
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="oklch(0.9 0.01 70)" />
                             <XAxis
                                 dataKey="date"
-                                tick={{ fontSize: 12 }}
+                                tick={{ fontSize: 10, fill: "oklch(0.4 0.05 45)", fontWeight: 700 }}
                                 tickLine={false}
                                 axisLine={false}
+                                dy={10}
                             />
                             <YAxis
-                                tick={{ fontSize: 12 }}
+                                tick={{ fontSize: 10, fill: "oklch(0.4 0.05 45)", fontWeight: 700 }}
                                 tickLine={false}
                                 axisLine={false}
                                 tickFormatter={(value: number) => `₹${value}`}
+                                dx={-10}
                             />
                             <Tooltip
                                 contentStyle={{
-                                    borderRadius: '8px',
-                                    border: 'none',
-                                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                                    borderRadius: '12px',
+                                    border: '1px solid oklch(0.9 0.01 70)',
+                                    boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
+                                    backgroundColor: 'white',
+                                    fontSize: '12px',
+                                    fontWeight: 'bold'
                                 }}
                                 formatter={(value: number | string | undefined) => [`₹${value}`, 'Price']}
                             />
                             <Area
                                 type="monotone"
                                 dataKey="price"
-                                stroke="#16a34a"
-                                strokeWidth={3}
+                                stroke="oklch(0.6 0.12 150)"
+                                strokeWidth={2.5}
                                 fillOpacity={1}
                                 fill="url(#colorPrice)"
                                 animationDuration={1500}

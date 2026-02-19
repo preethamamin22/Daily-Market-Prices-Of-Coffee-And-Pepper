@@ -35,46 +35,46 @@ export function PriceCard({ commodity, district, price, unit, date, previousPric
         <motion.div
             variants={itemVariants}
             layout
-            whileHover={{ y: -4, transition: { duration: 0.2 } }}
+            whileHover={{ y: -6, transition: { duration: 0.3, ease: "easeOut" } }}
             whileTap={{ scale: 0.98 }}
             className="group"
         >
-            <Card className="overflow-hidden border border-muted bg-background shadow-none group-hover:border-primary/20 group-hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300">
-                <CardContent className="p-5">
-                    <div className="flex justify-between items-start mb-6">
-                        <div className="space-y-0.5">
-                            <div className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60">
+            <Card className="overflow-hidden border border-border bg-card shadow-sm group-hover:border-primary/20 group-hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)] transition-all duration-500">
+                <CardContent className="p-6">
+                    <div className="flex justify-between items-start mb-8">
+                        <div className="space-y-1">
+                            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-foreground/40">
                                 <MapPin className="h-3 w-3" />
                                 {district}
                             </div>
-                            <h3 className="text-lg font-bold capitalize tracking-tight">{formattedCommodity.toLowerCase()}</h3>
+                            <h3 className="text-xl font-bold capitalize tracking-tight text-primary">{formattedCommodity.toLowerCase()}</h3>
                         </div>
-                        <div className={`text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 ${trend === "up" ? "text-green-600" :
-                            trend === "down" ? "text-red-600" :
-                                "text-muted-foreground/60"
+                        <div className={`text-[10px] font-black uppercase tracking-[0.1em] px-2 py-1 rounded-full flex items-center gap-1 ${trend === "up" ? "bg-green-50 text-green-700 border border-green-100" :
+                            trend === "down" ? "bg-red-50 text-red-700 border border-red-100" :
+                                "bg-muted text-foreground/40"
                             }`}>
-                            {trend === "up" && <ArrowUpIcon className="h-3 w-3" />}
-                            {trend === "down" && <ArrowDownIcon className="h-3 w-3" />}
-                            {trend === "steady" && <MinusIcon className="h-3 w-3" />}
+                            {trend === "up" && <ArrowUpIcon className="h-2.5 w-2.5" />}
+                            {trend === "down" && <ArrowDownIcon className="h-2.5 w-2.5" />}
+                            {trend === "steady" && <MinusIcon className="h-2.5 w-2.5" />}
                             {trend}
                         </div>
                     </div>
 
-                    <div className="flex items-baseline gap-1 mb-6">
-                        <span className="text-3xl font-bold tracking-tight">₹{price.toLocaleString()}</span>
-                        <span className="text-[10px] font-medium text-muted-foreground/60 uppercase tracking-widest">/ {unit}</span>
+                    <div className="flex items-baseline gap-1 mb-8">
+                        <span className="text-4xl font-bold tracking-tighter text-primary">₹{price.toLocaleString()}</span>
+                        <span className="text-[11px] font-bold text-foreground/40 uppercase tracking-widest">/ {unit}</span>
                     </div>
 
-                    <div className="flex items-center justify-between pt-4 border-t border-muted/30">
-                        <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground/60 font-medium">
-                            <Calendar className="h-3 w-3 opacity-40" />
-                            {format(new Date(date), "dd MMM, h:mm a")}
+                    <div className="flex items-center justify-between pt-6 border-t border-border/50">
+                        <div className="flex items-center gap-2 text-[10px] text-foreground/40 font-bold uppercase tracking-wider">
+                            <Calendar className="h-3 w-3 opacity-30" />
+                            {format(new Date(date), "dd MMM")}
                         </div>
                         <a
                             href={`/history?commodity=${commodity}&district=${district}`}
-                            className="text-[10px] font-bold uppercase tracking-widest hover:text-primary transition-colors pb-0.5 border-b border-transparent hover:border-primary"
+                            className="text-[10px] font-black uppercase tracking-[0.2em] text-primary hover:text-primary/70 transition-colors pb-0.5 border-b-2 border-primary/20 hover:border-primary"
                         >
-                            History
+                            Analyze
                         </a>
                     </div>
                 </CardContent>

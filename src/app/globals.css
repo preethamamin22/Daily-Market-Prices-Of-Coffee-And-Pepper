@@ -42,26 +42,32 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.1 0 0);
+  --background: oklch(0.98 0.01 70);
+  /* Soft Ivory */
+  --foreground: oklch(0.15 0.03 45);
+  /* Dark Espresso text */
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.1 0 0);
+  --card-foreground: oklch(0.15 0.03 45);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.1 0 0);
-  --primary: oklch(0.2 0 0);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.98 0 0);
-  --secondary-foreground: oklch(0.2 0 0);
-  --muted: oklch(0.98 0 0);
-  --muted-foreground: oklch(0.5 0 0);
-  --accent: oklch(0.98 0 0);
-  --accent-foreground: oklch(0.2 0 0);
-  --destructive: oklch(0.6 0.2 25);
+  --popover-foreground: oklch(0.15 0.03 45);
+  --primary: oklch(0.25 0.05 45);
+  /* Deep Espresso */
+  --primary-foreground: oklch(0.98 0.01 70);
+  --secondary: oklch(0.95 0.02 70);
+  /* Stone Accent */
+  --secondary-foreground: oklch(0.25 0.05 45);
+  --muted: oklch(0.92 0.01 70);
+  --muted-foreground: oklch(0.4 0.05 45);
+  --accent: oklch(0.95 0.02 70);
+  --accent-foreground: oklch(0.25 0.05 45);
+  --destructive: oklch(0.5 0.2 25);
   --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.95 0 0);
-  --input: oklch(0.95 0 0);
-  --ring: oklch(0.8 0 0);
-  --radius: 0.5rem;
+  --border: oklch(0.9 0.01 70);
+  /* Polished Stone border */
+  --input: oklch(0.9 0.01 70);
+  --ring: oklch(0.25 0.05 45);
+  --radius: 0.75rem;
+  /* Slightly more rounded for premium feel */
 }
 
 .dark {

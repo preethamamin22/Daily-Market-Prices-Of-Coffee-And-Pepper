@@ -28,7 +28,7 @@ export function Header() {
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 className={`sticky top-0 z-[100] w-full transition-all duration-500 ease-in-out ${isScrolled
-                    ? "bg-background/80 backdrop-blur-xl border-b border-muted/50 py-3 shadow-[0_2px_20px_rgba(0,0,0,0.02)]"
+                    ? "bg-background/90 backdrop-blur-xl border-b border-border py-3 shadow-[0_2px_20px_rgba(0,0,0,0.03)]"
                     : "bg-transparent py-7"
                     }`}
             >
@@ -38,14 +38,14 @@ export function Header() {
                             whileHover={{ height: 28 }}
                             className="w-1.5 h-6 bg-primary rounded-full transition-all ease-out"
                         />
-                        <span className="font-bold text-base tracking-tight uppercase">Market Prices</span>
+                        <span className="font-bold text-base tracking-tighter uppercase text-primary">Market Prices</span>
                     </Link>
 
                     <nav className="hidden md:flex items-center gap-10">
                         {navLinks.map((link) => (
                             <Link
                                 key={link.href}
-                                className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 hover:text-primary transition-all relative group"
+                                className="text-[10px] font-bold uppercase tracking-[0.2em] text-foreground/60 hover:text-primary transition-all relative group"
                                 href={link.href}
                             >
                                 {link.label}
@@ -58,7 +58,7 @@ export function Header() {
                         <Link href="/login" className="hidden sm:block">
                             <motion.span
                                 whileHover={{ x: 2 }}
-                                className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 hover:text-primary transition-colors flex items-center gap-2"
+                                className="text-[10px] font-bold uppercase tracking-[0.2em] text-foreground/60 hover:text-primary transition-colors flex items-center gap-2"
                             >
                                 <User className="h-3.5 w-3.5" />
                                 Admin

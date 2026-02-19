@@ -82,19 +82,19 @@ export default async function Home() {
 
       <SmoothWrapper>
         <div className="container px-6 py-12 md:py-24 max-w-7xl mx-auto">
-          <header className="mb-20 max-w-2xl">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tighter mb-4">
-              Today&apos;s Market.
+          <header className="mb-24 max-w-3xl">
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tighter mb-6 text-primary leading-[0.9]">
+              Today&apos;s <br />Market <span className="text-foreground/20">Pulse.</span>
             </h1>
-            <p className="text-muted-foreground text-sm uppercase tracking-widest font-bold">
-              Live price tracking for Kodagu & Hassan districts.
+            <p className="text-foreground/40 text-[11px] uppercase tracking-[0.25em] font-black leading-relaxed max-w-md">
+              Real-time monitoring and analytics for coffee and pepper commodities in the Malnad region.
             </p>
           </header>
 
           {error ? (
-            <div className="p-12 border border-destructive/20 bg-destructive/5 rounded-xl text-center">
-              <p className="text-destructive font-bold uppercase tracking-widest text-[10px] mb-2">Error connecting to database</p>
-              <p className="text-sm text-muted-foreground">{error}</p>
+            <div className="p-12 border border-destructive/20 bg-destructive/5 rounded-2xl text-center">
+              <p className="text-destructive font-black uppercase tracking-[0.2em] text-[10px] mb-2">System Interruption</p>
+              <p className="text-sm text-foreground/60">{error}</p>
             </div>
           ) : (
             <PriceList initialPrices={prices} prevPrices={prevPrices} />
@@ -102,14 +102,21 @@ export default async function Home() {
         </div>
       </SmoothWrapper>
 
-      <footer className="container px-6 py-20 border-t border-muted mt-20 max-w-7xl mx-auto text-center md:text-left">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40">
-            &copy; {new Date().getFullYear()} Market Price Tracker
-          </p>
-          <div className="flex gap-8">
-            <a href="#" className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 hover:text-primary transition-colors">Privacy</a>
-            <a href="#" className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 hover:text-primary transition-colors">Terms</a>
+      <footer className="container px-6 py-24 border-t border-border mt-32 max-w-7xl mx-auto text-center md:text-left">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-12">
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 justify-center md:justify-start">
+              <div className="w-1.5 h-4 bg-primary rounded-full transition-all ease-out" />
+              <span className="font-bold text-sm tracking-tighter uppercase text-primary">Market Prices</span>
+            </div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-foreground/20">
+              &copy; {new Date().getFullYear()} Malnad Commodity Exchange
+            </p>
+          </div>
+          <div className="flex gap-12">
+            <a href="#" className="text-[10px] font-black uppercase tracking-[0.3em] text-foreground/30 hover:text-primary transition-colors">Privacy</a>
+            <a href="#" className="text-[10px] font-black uppercase tracking-[0.3em] text-foreground/30 hover:text-primary transition-colors">Legal</a>
+            <a href="#" className="text-[10px] font-black uppercase tracking-[0.3em] text-foreground/30 hover:text-primary transition-colors">Contact</a>
           </div>
         </div>
       </footer>
