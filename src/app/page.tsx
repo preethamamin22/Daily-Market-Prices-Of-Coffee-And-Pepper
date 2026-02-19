@@ -67,53 +67,40 @@ export default async function Home() {
   const { prices, prevPrices, error } = await getPrices();
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-background to-background pb-20">
+    <main className="min-h-screen bg-background">
       <Header />
 
-      <main className="container px-4 py-12 max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16 space-y-4"
-        >
-          <h1 className="text-4xl md:text-6xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-amber-600 outline-none">
-            Daily Market Prices
+      <div className="container px-6 py-12 md:py-24 max-w-7xl mx-auto">
+        <header className="mb-20 max-w-2xl">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tighter mb-4">
+            Today's Market.
           </h1>
-          <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto font-medium">
-            Real-time Coffee and Pepper rates from the heart of Karnataka.
+          <p className="text-muted-foreground text-sm uppercase tracking-widest font-bold">
+            Live price tracking for Kodagu & Hassan districts.
           </p>
-        </motion.div>
+        </header>
 
-        {error && (
-          <div className="mb-8 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-            <p className="font-bold flex items-center gap-2 mb-1">
-              ⚠️ Database Connection Warning
-            </p>
-            <p>The application is having trouble connecting to the database. This is usually due to missing Environment Variables on Vercel.</p>
-            <p className="mt-2 p-2 bg-red-100 rounded font-mono text-xs overflow-auto">
-              Error Details: {error}
-            </p>
+        {error ? (
+          <div className="p-12 border border-destructive/20 bg-destructive/5 rounded-xl text-center">
+            <p className="text-destructive font-bold uppercase tracking-widest text-[10px] mb-2">Error connecting to database</p>
+            <p className="text-sm text-muted-foreground">{error}</p>
           </div>
+        ) : (
+          <PriceList initialPrices={prices} prevPrices={prevPrices} />
         )}
+      </div>
 
-        {prices.length === 0 && !error && (
-          <div className="text-center py-12 bg-white rounded-xl shadow-sm border">
-            <p className="text-xl text-muted-foreground">No prices updated for today yet.</p>
-            <p className="text-sm text-muted-foreground mt-2">Check back later or contact admin.</p>
-          </div>
-        )}
-
-        <PriceList initialPrices={prices} prevPrices={prevPrices} />
-      </main>
-
-      <footer className="border-t py-6 bg-background">
-        <div className="container text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} Coffee & Pepper Price Tracker. All rights reserved.</p>
-          <p className="mt-2">
-            Created by <a href="https://preethamamin.framer.website/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnq-FqHd1jwdFPLLgbiSYlb5GsSm_Nt8tmSURFDa-tZouVfp3OU5oTTpKa6_k_aem_cKoKzXCgHGODmRRcwMolOw" target="_blank" rel="noopener noreferrer" className="font-semibold hover:text-primary transition-colors">Preetham Amin</a>
+      <footer className="container px-6 py-20 border-t border-muted mt-20 max-w-7xl mx-auto text-center md:text-left">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40">
+            &copy; {new Date().getFullYear()} Market Price Tracker
           </p>
+          <div className="flex gap-8">
+            <a href="#" className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 hover:text-primary transition-colors">Privacy</a>
+            <a href="#" className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 hover:text-primary transition-colors">Terms</a>
+          </div>
         </div>
       </footer>
-    </div>
+    </main>
   );
 }

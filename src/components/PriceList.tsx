@@ -29,23 +29,23 @@ export function PriceList({ initialPrices, prevPrices }: PriceListProps) {
     const hassanPrices = filteredPrices.filter((p: any) => p.district === "HASSAN");
 
     return (
-        <div className="space-y-8">
-            <div className="relative max-w-md mx-auto mb-10">
+        <div className="space-y-16">
+            <div className="relative max-w-sm mx-auto">
                 <div className="relative group">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground/50 transition-colors group-focus-within:text-primary" />
                     <Input
                         type="text"
-                        placeholder="Search commodity or district..."
-                        className="pl-10 pr-10 py-6 rounded-2xl border-2 border-muted hover:border-primary/50 focus:border-primary transition-all shadow-sm"
+                        placeholder="Search markets..."
+                        className="pl-9 pr-9 py-5 rounded-lg border-muted bg-transparent hover:border-muted-foreground/20 focus:border-primary transition-all shadow-none text-sm"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
                     {searchQuery && (
                         <button
                             onClick={() => setSearchQuery("")}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-muted rounded-full transition-colors"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-muted rounded-md transition-colors"
                         >
-                            <X className="h-4 w-4 text-muted-foreground" />
+                            <X className="h-3.5 w-3.5 text-muted-foreground/50" />
                         </button>
                     )}
                 </div>
@@ -53,14 +53,14 @@ export function PriceList({ initialPrices, prevPrices }: PriceListProps) {
 
             {filteredPrices.length === 0 && (
                 <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="text-center py-20 bg-background/50 rounded-3xl border-2 border-dashed border-muted"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="text-center py-20 border border-dashed border-muted rounded-xl"
                 >
-                    <p className="text-xl text-muted-foreground">No matches found for "{searchQuery}"</p>
+                    <p className="text-sm text-muted-foreground">No matches for "{searchQuery}"</p>
                     <button
                         onClick={() => setSearchQuery("")}
-                        className="mt-4 text-primary font-semibold hover:underline"
+                        className="mt-2 text-xs font-bold uppercase tracking-widest text-primary hover:underline"
                     >
                         Clear Search
                     </button>
@@ -71,16 +71,15 @@ export function PriceList({ initialPrices, prevPrices }: PriceListProps) {
                 {kodaguPrices.length > 0 && (
                     <motion.div
                         key="kodagu"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
-                        className="space-y-4"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="space-y-6"
                     >
-                        <h2 className="text-2xl font-bold flex items-center gap-3 px-2">
-                            <span className="w-2 h-8 bg-primary rounded-full" />
+                        <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 px-1 border-b border-muted/30 pb-2">
                             Kodagu District
                         </h2>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                             {kodaguPrices.map((p: any) => (
                                 <PriceCard
                                     key={p.id}
@@ -99,16 +98,15 @@ export function PriceList({ initialPrices, prevPrices }: PriceListProps) {
                 {hassanPrices.length > 0 && (
                     <motion.div
                         key="hassan"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
-                        className="space-y-4 pt-4"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="space-y-6 pt-8"
                     >
-                        <h2 className="text-2xl font-bold flex items-center gap-3 px-2">
-                            <span className="w-2 h-8 bg-amber-500 rounded-full" />
+                        <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 px-1 border-b border-muted/30 pb-2">
                             Hassan District
                         </h2>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                             {hassanPrices.map((p: any) => (
                                 <PriceCard
                                     key={p.id}
