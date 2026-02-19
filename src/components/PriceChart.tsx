@@ -1,8 +1,6 @@
 "use client";
 
 import {
-    LineChart,
-    Line,
     XAxis,
     YAxis,
     CartesianGrid,
@@ -12,15 +10,16 @@ import {
     Area
 } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { HistoryData } from "@/types/price";
 
 interface PriceChartProps {
-    data: any[];
+    data: HistoryData[];
     title: string;
     commodity: string;
     district: string;
 }
 
-export function PriceChart({ data, title, commodity, district }: PriceChartProps) {
+export function PriceChart({ data, title, district }: PriceChartProps) {
     if (!data || data.length === 0) {
         return (
             <Card className="h-[400px] flex items-center justify-center">
@@ -60,7 +59,7 @@ export function PriceChart({ data, title, commodity, district }: PriceChartProps
                                 tick={{ fontSize: 12 }}
                                 tickLine={false}
                                 axisLine={false}
-                                tickFormatter={(value) => `₹${value}`}
+                                tickFormatter={(value: number) => `₹${value}`}
                             />
                             <Tooltip
                                 contentStyle={{
@@ -68,7 +67,7 @@ export function PriceChart({ data, title, commodity, district }: PriceChartProps
                                     border: 'none',
                                     boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
                                 }}
-                                formatter={(value: any) => [`₹${value}`, 'Price']}
+                                formatter={(value: number | string | undefined) => [`₹${value}`, 'Price']}
                             />
                             <Area
                                 type="monotone"

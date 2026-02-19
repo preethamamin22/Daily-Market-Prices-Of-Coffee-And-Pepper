@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -42,7 +43,7 @@ export default function LoginPage() {
                 router.push("/admin");
                 router.refresh();
             }
-        } catch (err) {
+        } catch {
             setError("Something went wrong");
         } finally {
             setLoading(false);
@@ -53,7 +54,7 @@ export default function LoginPage() {
         setLoading(true);
         try {
             await signIn("google", { callbackUrl: "/admin" });
-        } catch (err) {
+        } catch {
             setError("Google sign-in failed");
             setLoading(false);
         }
@@ -69,8 +70,8 @@ export default function LoginPage() {
                     <CardTitle className="text-2xl font-bold">Admin Login</CardTitle>
                     <div className="flex justify-center items-center gap-2 mt-1">
                         <div className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider transition-colors ${dbStatus === 'up' ? 'bg-green-100 text-green-700' :
-                                dbStatus === 'down' ? 'bg-red-100 text-red-700' :
-                                    'bg-amber-100 text-amber-700'
+                            dbStatus === 'down' ? 'bg-red-100 text-red-700' :
+                                'bg-amber-100 text-amber-700'
                             }`}>
                             {dbStatus === 'checking' && <Loader2 className="h-2.5 w-2.5 animate-spin" />}
                             {dbStatus === 'up' && <ShieldCheck className="h-2.5 w-2.5" />}
@@ -151,9 +152,9 @@ export default function LoginPage() {
                     </Button>
 
                     <p className="text-center text-sm text-muted-foreground mt-4">
-                        <a href="/" className="hover:underline">
+                        <Link href="/" className="hover:underline">
                             ← Back to Home
-                        </a>
+                        </Link>
                     </p>
                 </CardContent>
             </Card>

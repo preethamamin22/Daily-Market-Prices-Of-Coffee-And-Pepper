@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { prisma } from "@/lib/db";
+// import { prisma } from "@/lib/db";
 import { PriceData } from "@/lib/price-service";
 
 export async function addPrice(data: PriceData) {
@@ -32,7 +32,7 @@ export async function syncPrices() {
         await new Promise(resolve => setTimeout(resolve, 2000));
         revalidatePath("/");
         return { success: true };
-    } catch (error) {
+    } catch {
         return { success: false, error: "Failed to sync" };
     }
 }

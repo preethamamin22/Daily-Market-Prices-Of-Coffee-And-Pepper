@@ -26,6 +26,14 @@ const BASELINES = {
     PEPPER: { price: 690, unit: 'KG' },              // CPA rate: 690/kg
 };
 
+interface AgmarknetItem {
+    commodity_name: string;
+    market_location: string;
+    modal_price: string;
+    unit?: string;
+    arrival_date: string;
+}
+
 /**
  * Fetch prices from Agmarknet API
  */
@@ -44,7 +52,7 @@ async function fetchAgmarknetPrices(): Promise<PriceData[]> {
         if (!response.ok) throw new Error(`Agmarknet API error: ${response.statusText}`);
 
         const data = await response.json();
-        return data.map((item: any) => ({
+        return data.map((item: AgmarknetItem) => ({
             commodity: item.commodity_name,
             district: item.market_location,
             price: parseFloat(item.modal_price),
@@ -58,6 +66,13 @@ async function fetchAgmarknetPrices(): Promise<PriceData[]> {
     }
 }
 
+interface CommoditiesApiResponse {
+    success: boolean;
+    rates: {
+        [key: string]: number;
+    };
+}
+
 /**
  * Fetch from Commodities API
  */
@@ -69,8 +84,8 @@ async function fetchCommoditiesAPI(): Promise<PriceData[]> {
         const pepperResponse = await fetch(`https://commodities-api.com/api/latest?access_key=${API_KEY}&base=INR&symbols=BLKPEP`);
         const coffeeResponse = await fetch(`https://commodities-api.com/api/latest?access_key=${API_KEY}&base=INR&symbols=COFFEE`);
 
-        const pepperData = await pepperResponse.json();
-        const coffeeData = await coffeeResponse.json();
+        const pepperData = await pepperResponse.json() as CommoditiesApiResponse;
+        const coffeeData = await coffeeResponse.json() as CommoditiesApiResponse;
         const prices: PriceData[] = [];
 
         if (pepperData.success && pepperData.rates.BLKPEP) {
@@ -86,7 +101,22 @@ async function fetchCommoditiesAPI(): Promise<PriceData[]> {
                 });
             });
         }
-        // ... coffee mapping logic ...
+
+        if (coffeeData.success && coffeeData.rates.COFFEE) {
+            const price = Math.round(1 / coffeeData.rates.COFFEE);
+            // Coffee mapping logic (simplified for demonstration, real logic might differ)
+            ['KODAGU', 'HASSAN'].forEach(dist => {
+                prices.push({
+                    commodity: 'COFFEE_ROBUSTA',
+                    district: dist,
+                    price: price,
+                    unit: '50KG',
+                    source: 'Commodities-API',
+                    date: new Date(),
+                });
+            });
+        }
+
         return prices;
     } catch (error) {
         console.error('Error fetching from Commodities API:', error);

@@ -25,11 +25,11 @@ export async function GET() {
                 NEXTAUTH_SECRET_SET: !!process.env.NEXTAUTH_SECRET
             }
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         return NextResponse.json({
             status: "error",
-            message: error.message,
-            stack: error.stack,
+            message: error instanceof Error ? error.message : "Unknown error",
+            stack: error instanceof Error ? error.stack : undefined,
             env: {
                 DATABASE_URL_SET: !!process.env.DATABASE_URL
             }

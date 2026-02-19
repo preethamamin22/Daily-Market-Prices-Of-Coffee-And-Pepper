@@ -15,10 +15,23 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, UserCheck, UserPlus, Clock } from "lucide-react";
 import { format } from "date-fns";
 
+interface UserAccount {
+    id: string;
+    email: string | null;
+    phone: string | null;
+    name: string | null;
+    role: string;
+    googleId: string | null;
+    password?: string | null;
+    lastLogin: Date | null;
+    loginCount: number;
+    createdAt: Date;
+}
+
 async function getAdminData() {
     const users = await prisma.user.findMany({
         orderBy: { createdAt: "desc" }
-    });
+    }) as unknown as UserAccount[];
 
     const now = new Date();
     const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -26,9 +39,9 @@ async function getAdminData() {
 
     const stats = {
         totalUsers: users.length,
-        newUsersThisWeek: users.filter((u: any) => u.createdAt > weekAgo).length,
-        activeToday: users.filter((u: any) => u.lastLogin && u.lastLogin > today).length,
-        totalLogins: users.reduce((acc: number, u: any) => acc + (u.loginCount || 0), 0)
+        newUsersThisWeek: users.filter((u) => u.createdAt > weekAgo).length,
+        activeToday: users.filter((u) => u.lastLogin && u.lastLogin > today).length,
+        totalLogins: users.reduce((acc, u) => acc + (u.loginCount || 0), 0)
     };
 
     return { users, stats };
@@ -37,7 +50,7 @@ async function getAdminData() {
 export default async function AdminUsersPage() {
     const session = await getServerSession(authOptions);
 
-    if (!session || (session.user as any).role !== "ADMIN") {
+    if (!session || (session.user as { role?: string }).role !== "ADMIN") {
         redirect("/login");
     }
 
@@ -45,7 +58,6 @@ export default async function AdminUsersPage() {
 
     return (
         <div className="min-h-screen bg-muted/10 pb-10">
-            {/* @ts-ignore - async component */}
             <Header />
 
             <main className="container px-4 py-8">
@@ -113,7 +125,7 @@ export default async function AdminUsersPage() {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {users.map((user: any) => (
+                                {users.map((user) => (
                                     <TableRow key={user.id}>
                                         <TableCell>
                                             <div className="flex flex-col">

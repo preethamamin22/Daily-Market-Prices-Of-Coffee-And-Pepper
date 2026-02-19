@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { Menu, X, User } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -26,8 +26,8 @@ export function Header() {
         <>
             <header
                 className={`sticky top-0 z-[100] w-full transition-all duration-300 ${isScrolled
-                        ? "bg-background/80 backdrop-blur-md border-b border-muted py-2"
-                        : "bg-transparent py-6"
+                    ? "bg-background/80 backdrop-blur-md border-b border-muted py-2"
+                    : "bg-transparent py-6"
                     }`}
             >
                 <div className="container flex h-12 items-center justify-between px-6 max-w-7xl mx-auto">

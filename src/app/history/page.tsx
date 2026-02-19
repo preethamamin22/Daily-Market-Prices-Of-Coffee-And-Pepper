@@ -6,8 +6,9 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { TrendingUp, Info } from "lucide-react";
 import Link from "next/link";
 import { startOfDay, subDays } from "date-fns";
+import { PriceData, HistoryData } from "@/types/price";
 
-async function getHistoryData(commodity: string, district: string, days: number = 30) {
+async function getHistoryData(commodity: string, district: string, days: number = 30): Promise<HistoryData[]> {
     try {
         const startDate = startOfDay(subDays(new Date(), days));
 
@@ -22,9 +23,9 @@ async function getHistoryData(commodity: string, district: string, days: number 
             orderBy: {
                 date: "asc",
             },
-        });
+        }) as unknown as PriceData[];
 
-        return entries.map((e: any) => ({
+        return entries.map((e) => ({
             date: e.date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }),
             price: e.price,
             timestamp: e.date.getTime(),
@@ -46,7 +47,6 @@ export default async function HistoryPage(props: {
 
     return (
         <div className="min-h-screen bg-muted/10 pb-12 text-foreground">
-            {/* @ts-ignore - async component */}
             <Header />
 
             <main className="container px-4 py-8">
@@ -135,7 +135,7 @@ export default async function HistoryPage(props: {
                                 <CardContent className="pt-6">
                                     <p className="text-sm text-muted-foreground">Highest Price</p>
                                     <p className="text-2xl font-bold text-green-600">
-                                        ₹{data.length > 0 ? Math.max(...data.map((d: any) => d.price)) : 0}
+                                        ₹{data.length > 0 ? Math.max(...data.map((d) => d.price)) : 0}
                                     </p>
                                 </CardContent>
                             </Card>
@@ -143,7 +143,7 @@ export default async function HistoryPage(props: {
                                 <CardContent className="pt-6">
                                     <p className="text-sm text-muted-foreground">Lowest Price</p>
                                     <p className="text-2xl font-bold text-amber-600">
-                                        ₹{data.length > 0 ? Math.min(...data.map((d: any) => d.price)) : 0}
+                                        ₹{data.length > 0 ? Math.min(...data.map((d) => d.price)) : 0}
                                     </p>
                                 </CardContent>
                             </Card>
@@ -151,7 +151,7 @@ export default async function HistoryPage(props: {
                                 <CardContent className="pt-6">
                                     <p className="text-sm text-muted-foreground">Average Price</p>
                                     <p className="text-2xl font-bold">
-                                        ₹{data.length > 0 ? (data.reduce((acc: number, curr: any) => acc + curr.price, 0) / data.length).toFixed(0) : 0}
+                                        ₹{data.length > 0 ? (data.reduce((acc, curr) => acc + curr.price, 0) / data.length).toFixed(0) : 0}
                                     </p>
                                 </CardContent>
                             </Card>

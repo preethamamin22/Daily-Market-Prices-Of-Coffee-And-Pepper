@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { subDays, startOfDay } from "date-fns";
+import { PriceData, HistoryData } from "@/types/price";
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
@@ -22,12 +23,13 @@ export async function GET(request: Request) {
             orderBy: {
                 date: "asc",
             },
-        });
+        }) as unknown as PriceData[];
 
         // Format data for Recharts
-        const chartData = prices.map((p: any) => ({
+        const chartData: HistoryData[] = prices.map((p) => ({
             date: p.date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }),
             price: p.price,
+            timestamp: p.date.getTime(),
             fullDate: p.date.toISOString(),
         }));
 

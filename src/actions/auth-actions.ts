@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 export async function login(formData: FormData) {
     // Mock login logic
     const email = formData.get("email");
-    const password = formData.get("password");
+    formData.get("password");
 
     console.log("Login attempt:", email);
 

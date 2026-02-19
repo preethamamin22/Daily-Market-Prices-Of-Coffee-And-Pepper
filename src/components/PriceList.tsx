@@ -5,28 +5,24 @@ import { PriceCard } from "./PriceCard";
 import { Input } from "@/components/ui/input";
 import { Search, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
-interface PriceListProps {
-    initialPrices: any[];
-    prevPrices: any[];
-}
+import { PriceData, PriceListProps } from "@/types/price";
 
 export function PriceList({ initialPrices, prevPrices }: PriceListProps) {
     const [searchQuery, setSearchQuery] = useState("");
 
     const getPrevPrice = (commodity: string, district: string) => {
         return prevPrices.find(
-            (p: any) => p.commodity === commodity && p.district === district
+            (p: PriceData) => p.commodity === commodity && p.district === district
         )?.price;
     };
 
-    const filteredPrices = initialPrices.filter((p: any) =>
+    const filteredPrices = initialPrices.filter((p: PriceData) =>
         p.commodity.toLowerCase().includes(searchQuery.toLowerCase()) ||
         p.district.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    const kodaguPrices = filteredPrices.filter((p: any) => p.district === "KODAGU");
-    const hassanPrices = filteredPrices.filter((p: any) => p.district === "HASSAN");
+    const kodaguPrices = filteredPrices.filter((p: PriceData) => p.district === "KODAGU");
+    const hassanPrices = filteredPrices.filter((p: PriceData) => p.district === "HASSAN");
 
     return (
         <div className="space-y-16">
@@ -57,7 +53,7 @@ export function PriceList({ initialPrices, prevPrices }: PriceListProps) {
                     animate={{ opacity: 1 }}
                     className="text-center py-20 border border-dashed border-muted rounded-xl"
                 >
-                    <p className="text-sm text-muted-foreground">No matches for "{searchQuery}"</p>
+                    <p className="text-sm text-muted-foreground">No matches for &quot;{searchQuery}&quot;</p>
                     <button
                         onClick={() => setSearchQuery("")}
                         className="mt-2 text-xs font-bold uppercase tracking-widest text-primary hover:underline"
@@ -80,7 +76,7 @@ export function PriceList({ initialPrices, prevPrices }: PriceListProps) {
                             Kodagu District
                         </h2>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {kodaguPrices.map((p: any) => (
+                            {kodaguPrices.map((p: PriceData) => (
                                 <PriceCard
                                     key={p.id}
                                     commodity={p.commodity}
@@ -107,7 +103,7 @@ export function PriceList({ initialPrices, prevPrices }: PriceListProps) {
                             Hassan District
                         </h2>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {hassanPrices.map((p: any) => (
+                            {hassanPrices.map((p: PriceData) => (
                                 <PriceCard
                                     key={p.id}
                                     commodity={p.commodity}

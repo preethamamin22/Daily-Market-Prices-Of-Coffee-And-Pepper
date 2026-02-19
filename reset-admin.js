@@ -1,3 +1,4 @@
+﻿/* eslint-disable @typescript-eslint/no-require-imports */
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcryptjs');
 const prisma = new PrismaClient();
@@ -16,7 +17,8 @@ async function reset() {
         data: { password: hashedPassword }
     });
 
-    console.log('✅ Admin password reset successfully!');
+    console.log('âœ… Admin password reset successfully!');
 }
 
 reset().catch(console.error).finally(() => prisma.$disconnect());
+

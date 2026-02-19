@@ -14,9 +14,9 @@ export const authOptions: NextAuthOptions = {
     },
     secret: process.env.NEXTAUTH_SECRET || "fallback-secret-for-dev-only",
     // Add debugging for Vercel
-    ...(process.env.NODE_ENV === "production" && !process.env.NEXTAUTH_SECRET && (
-        console.error("CRITICAL: NEXTAUTH_SECRET is not set in Vercel environment variables!") as any
-    )),
+    ...(process.env.NODE_ENV === "production" && !process.env.NEXTAUTH_SECRET ? (
+        (() => { console.error("CRITICAL: NEXTAUTH_SECRET is not set in Vercel environment variables!"); return {}; })()
+    ) : {}),
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID || "",
@@ -85,7 +85,7 @@ export const authOptions: NextAuthOptions = {
         }),
     ],
     callbacks: {
-        async signIn({ user, account, profile }) {
+        async signIn({ user, account }) {
             if (account?.provider === "google") {
                 // Check if user exists
                 const existingUser = await prisma.user.findUnique({
@@ -120,7 +120,7 @@ export const authOptions: NextAuthOptions = {
         },
         async jwt({ token, user, account }) {
             if (user) {
-                token.role = (user as any).role;
+                token.role = (user as { role?: string }).role;
                 token.id = user.id;
             }
 
@@ -139,8 +139,8 @@ export const authOptions: NextAuthOptions = {
         },
         async session({ session, token }) {
             if (session.user) {
-                (session.user as any).role = token.role;
-                (session.user as any).id = token.id;
+                (session.user as { role?: string; id?: string }).role = token.role as string;
+                (session.user as { role?: string; id?: string }).id = token.id as string;
             }
             return session;
         },

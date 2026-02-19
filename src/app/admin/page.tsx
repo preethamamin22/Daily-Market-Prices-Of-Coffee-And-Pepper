@@ -64,7 +64,7 @@ export default async function AdminPage() {
                             <Button variant="outline">View User Analytics</Button>
                         </Link>
                         <div className="bg-primary/10 text-primary px-4 py-2 rounded-lg font-medium">
-                            Welcome, {(session.user as any).name || "Admin"}
+                            Welcome, {(session.user as { name?: string | null }).name || "Admin"}
                         </div>
                     </div>
                 </div>

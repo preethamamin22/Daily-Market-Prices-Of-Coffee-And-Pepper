@@ -3,9 +3,9 @@ import { Header } from "@/components/Header";
 import { prisma } from "@/lib/db";
 import { fetchLatestPrices } from "@/lib/scraper";
 import { PriceList } from "@/components/PriceList";
-import * as motion from "framer-motion/client";
+import { PriceData } from "@/types/price";
 
-async function getPrices() {
+async function getPrices(): Promise<{ prices: PriceData[]; prevPrices: PriceData[]; error: string | null }> {
   try {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -20,19 +20,23 @@ async function getPrices() {
       orderBy: {
         date: "desc",
       },
-    });
+    }) as unknown as PriceData[];
 
     // If no prices for today, try to fetch live
     if (prices.length === 0) {
       try {
         const livePrices = await fetchLatestPrices();
-        const transformedLive = livePrices.map(p => ({
+        const transformedLive: PriceData[] = livePrices.map(p => ({
           id: `live-${p.commodity}-${p.district}`,
-          ...p,
+          commodity: p.commodity,
+          district: p.district,
+          price: p.price,
+          unit: p.unit,
+          date: p.date,
+          source: p.source,
           createdAt: new Date(),
           updatedAt: new Date(),
         }));
-        // @ts-ignore
         prices = transformedLive;
       } catch (e) {
         console.error("Failed to fetch live prices:", e);
@@ -54,12 +58,16 @@ async function getPrices() {
       orderBy: {
         date: "desc",
       },
-    });
+    }) as unknown as PriceData[];
 
     return { prices, prevPrices, error: null };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Critical error in getPrices:", error);
-    return { prices: [], prevPrices: [], error: error.message || "Unknown database error" };
+    return {
+      prices: [],
+      prevPrices: [],
+      error: error instanceof Error ? error.message : "Unknown database error"
+    };
   }
 }
 
@@ -73,7 +81,7 @@ export default async function Home() {
       <div className="container px-6 py-12 md:py-24 max-w-7xl mx-auto">
         <header className="mb-20 max-w-2xl">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tighter mb-4">
-            Today's Market.
+            Today&apos;s Market.
           </h1>
           <p className="text-muted-foreground text-sm uppercase tracking-widest font-bold">
             Live price tracking for Kodagu & Hassan districts.
