@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Coffee, ShieldCheck, ShieldAlert, Loader2 } from "lucide-react";
+import { Coffee, ShieldCheck, ShieldAlert, Loader2, KeyRound, User } from "lucide-react";
 import { SmoothWrapper } from "@/components/SmoothWrapper";
 
 export default function LoginPage() {
@@ -39,13 +39,13 @@ export default function LoginPage() {
             });
 
             if (res?.error) {
-                setError("Invalid email or password");
+                setError("Invalid username or password");
             } else {
                 router.push("/admin");
                 router.refresh();
             }
         } catch {
-            setError("Something went wrong");
+            setError("Authentication failed");
         } finally {
             setLoading(false);
         }
@@ -68,44 +68,40 @@ export default function LoginPage() {
             <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px]" />
 
             <SmoothWrapper>
-                <Card className="w-full max-w-md shadow-2xl border-border bg-card/50 backdrop-blur-sm relative z-10">
+                <Card className="w-full max-w-md shadow-2xl border-border bg-card/80 backdrop-blur-md relative z-10 rounded-3xl">
                     <CardHeader className="text-center space-y-4 pt-10">
-                        <div className="mx-auto bg-primary/10 p-4 rounded-2xl w-fit">
-                            <Coffee className="h-10 w-10 text-primary" />
+                        <div className="mx-auto bg-primary/10 p-4 rounded-2xl w-fit text-primary">
+                            <Coffee className="h-10 w-10" />
                         </div>
                         <div className="space-y-1">
-                            <CardTitle className="text-3xl font-black tracking-tighter text-primary">Admin Access</CardTitle>
-                            <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-foreground/40">Secure Portal</p>
-                        </div>
-                        <div className="flex justify-center items-center gap-2">
-                            <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${dbStatus === 'up' ? 'bg-green-50 text-green-700 border border-green-100' :
-                                dbStatus === 'down' ? 'bg-red-50 text-red-700 border border-red-100' :
-                                    'bg-amber-50 text-amber-700 border border-amber-100'
-                                }`}>
-                                {dbStatus === 'checking' && <Loader2 className="h-3 w-3 animate-spin" />}
-                                {dbStatus === 'up' && <ShieldCheck className="h-3 w-3" />}
-                                {dbStatus === 'down' && <ShieldAlert className="h-3 w-3" />}
-                                {dbStatus === 'up' ? 'Connected' : dbStatus === 'down' ? 'Offline' : 'Checking...'}
-                            </div>
+                            <CardTitle className="text-3xl font-black tracking-tight text-foreground">Admin Portal</CardTitle>
+                            <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Malnad Market Exchange</p>
                         </div>
                     </CardHeader>
+
                     <CardContent className="space-y-6 px-8 pb-10">
                         <form onSubmit={handleSubmit} className="space-y-5">
                             <div className="space-y-2">
-                                <Label htmlFor="email" className="text-[10px] font-black uppercase tracking-widest text-foreground/40 ml-1">Email</Label>
+                                <Label htmlFor="email" className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5 ml-1">
+                                    <User className="h-3.5 w-3.5 text-primary" />
+                                    Username or Email
+                                </Label>
                                 <Input
                                     id="email"
-                                    type="email"
+                                    type="text"
                                     required
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="admin@market.com"
+                                    placeholder="Preetham"
                                     disabled={loading}
-                                    className="rounded-xl border-border py-6 font-bold tracking-tight bg-background/50"
+                                    className="rounded-xl border-border/80 py-6 font-bold tracking-tight bg-background/60 focus:ring-2 focus:ring-primary"
                                 />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="password" className="text-[10px] font-black uppercase tracking-widest text-foreground/40 ml-1">Password</Label>
+                                <Label htmlFor="password" className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5 ml-1">
+                                    <KeyRound className="h-3.5 w-3.5 text-primary" />
+                                    Password
+                                </Label>
                                 <Input
                                     id="password"
                                     type="password"
@@ -114,22 +110,23 @@ export default function LoginPage() {
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="••••••••"
                                     disabled={loading}
-                                    className="rounded-xl border-border py-6 font-bold tracking-tight bg-background/50"
+                                    className="rounded-xl border-border/80 py-6 font-bold tracking-tight bg-background/60 focus:ring-2 focus:ring-primary"
                                 />
                             </div>
-                            {error && <p className="text-xs text-destructive font-bold text-center italic">{error}</p>}
-                            <Button type="submit" className="w-full py-6 rounded-xl font-black uppercase tracking-[0.2em] text-[10px] shadow-lg shadow-primary/20" disabled={loading}>
-                                {loading ? "Authorizing..." : "Authenticate"}
+                            {error && <p className="text-xs text-destructive font-extrabold text-center bg-destructive/10 p-2.5 rounded-xl border border-destructive/20">{error}</p>}
+                            
+                            <Button type="submit" className="w-full py-6 rounded-xl font-extrabold uppercase tracking-wider text-xs shadow-md shadow-primary/20" disabled={loading}>
+                                {loading ? "Authorizing..." : "Login to Admin Portal"}
                             </Button>
                         </form>
 
                         <div className="relative my-4">
                             <div className="absolute inset-0 flex items-center">
-                                <span className="w-full border-t" />
+                                <span className="w-full border-t border-border/60" />
                             </div>
-                            <div className="relative flex justify-center text-xs uppercase">
-                                <span className="bg-background px-2 text-muted-foreground">
-                                    Or continue with
+                            <div className="relative flex justify-center text-[10px] font-black uppercase tracking-widest">
+                                <span className="bg-card px-3 text-muted-foreground">
+                                    Alternative Sign In
                                 </span>
                             </div>
                         </div>
@@ -137,7 +134,7 @@ export default function LoginPage() {
                         <Button
                             type="button"
                             variant="outline"
-                            className="w-full"
+                            className="w-full py-5 rounded-xl border-border/70 font-bold"
                             onClick={handleGoogleSignIn}
                             disabled={loading}
                         >
@@ -162,8 +159,8 @@ export default function LoginPage() {
                             Sign in with Google
                         </Button>
 
-                        <p className="text-center text-sm text-muted-foreground mt-4">
-                            <Link href="/" className="hover:underline">
+                        <p className="text-center text-xs font-bold text-muted-foreground mt-4">
+                            <Link href="/" className="hover:text-primary transition-colors">
                                 ← Back to Home
                             </Link>
                         </p>
