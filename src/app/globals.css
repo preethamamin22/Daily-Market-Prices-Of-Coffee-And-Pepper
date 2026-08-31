@@ -2,50 +2,12 @@
 
 @plugin "tailwindcss-animate";
 
-@custom-variant dark (&:is(.dark *));
-
-@theme {
-  --font-sans: var(--font-sans), system-ui, -apple-system, sans-serif;
-
-  --color-background: #0f172a;
-  --color-foreground: #f8fafc;
-
-  --color-card: #1e293b;
-  --color-card-foreground: #f8fafc;
-
-  --color-popover: #1e293b;
-  --color-popover-foreground: #f8fafc;
-
-  --color-primary: #10b981;
-  --color-primary-foreground: #022c22;
-
-  --color-secondary: #0f766e;
-  --color-secondary-foreground: #ffffff;
-
-  --color-muted: #334155;
-  --color-muted-foreground: #94a3b8;
-
-  --color-accent: #047857;
-  --color-accent-foreground: #ffffff;
-
-  --color-destructive: #f43f5e;
-  --color-destructive-foreground: #ffffff;
-
-  --color-border: #334155;
-  --color-input: #334155;
-  --color-ring: #10b981;
-
-  --radius-lg: 1rem;
-  --radius-md: 0.75rem;
-  --radius-sm: 0.5rem;
-}
-
 :root {
-  --background: #0b1329;
+  --background: #090e1a;
   --foreground: #f8fafc;
-  --card: #131f37;
+  --card: #111a2e;
   --card-foreground: #f8fafc;
-  --popover: #131f37;
+  --popover: #111a2e;
   --popover-foreground: #f8fafc;
   --primary: #10b981;
   --primary-foreground: #022c22;
@@ -57,42 +19,53 @@
   --accent-foreground: #ffffff;
   --destructive: #f43f5e;
   --destructive-foreground: #ffffff;
-  --border: #1e293b;
-  --input: #1e293b;
+  --border: #1e2d4a;
+  --input: #1e2d4a;
   --ring: #10b981;
   --radius: 1rem;
 }
 
-/* Custom visual utilities */
-.glass-panel {
-  background: rgba(19, 31, 55, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
 }
 
-.gradient-text {
-  background: linear-gradient(135deg, #10b981 0%, #38bdf8 50%, #a855f7 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+body {
+  background-color: #090e1a !important;
+  color: #f8fafc !important;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  min-height: 100vh;
 }
 
-.hero-glow {
-  background: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.15) 0%, rgba(11, 19, 41, 0) 70%);
-}
-
-/* Custom scrollbar */
+/* Global scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0b1329;
+  background: #090e1a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #1e2d4a;
   border-radius: 9999px;
 }
 
