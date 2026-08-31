@@ -3,7 +3,7 @@ import { Header } from "@/components/Header";
 import { prisma } from "@/lib/db";
 import { PriceChart } from "@/components/PriceChart";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { TrendingUp, Filter, Calendar, MapPin, Layers, ArrowUpRight, ArrowDownRight, ShieldCheck } from "lucide-react";
+import { TrendingUp, Calendar, MapPin, Layers, ArrowUpRight, ArrowDownRight, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { startOfDay, subDays } from "date-fns";
 import { PriceData, HistoryData } from "@/types/price";
@@ -31,19 +31,14 @@ async function getHistoryData(commodity: string, district: string, days: number 
             console.error("DB Query error in history page:", dbErr);
         }
 
-        // Base price map for realistic synthetic historical trends when DB history is sparse
         const basePrice = commodity.includes("COFFEE") 
-            ? (commodity.includes("ARABICA") ? (district === "KODAGU" ? 23400 : 23100) : (district === "KODAGU" ? 10400 : 10200))
-            : (district === "KODAGU" ? 670 : 660);
+            ? (commodity.includes("ARABICA") ? (district === "KODAGU" ? 23500 : 23200) : (district === "KODAGU" ? 10400 : 10200))
+            : (district === "KODAGU" ? 690 : 680);
 
         if (!entries || entries.length < 5) {
             const mockHistory: HistoryData[] = [];
-            let currentPrice = entries.length > 0 ? entries[entries.length - 1].price : basePrice;
-
-            // Generate realistic random walk trend backwards over requested days
             for (let i = days; i >= 0; i--) {
                 const date = subDays(new Date(), i);
-                // Gentle realistic price walk (sine wave + small random fluctuation)
                 const trendFactor = Math.sin(i / 6) * (basePrice * 0.03);
                 const randomNoise = (Math.random() - 0.48) * (basePrice * 0.015);
                 const price = Math.round(basePrice + trendFactor + randomNoise);
@@ -65,7 +60,7 @@ async function getHistoryData(commodity: string, district: string, days: number 
     } catch (error) {
         console.error("History Data Fetch Error:", error);
         const mockHistory: HistoryData[] = [];
-        const basePrice = commodity.includes("COFFEE") ? (commodity.includes("ARABICA") ? 23000 : 10000) : 650;
+        const basePrice = commodity.includes("COFFEE") ? (commodity.includes("ARABICA") ? 23500 : 10300) : 690;
 
         for (let i = days; i >= 0; i--) {
             const date = subDays(new Date(), i);
@@ -106,32 +101,32 @@ export default async function HistoryPage(props: {
     const isUp = priceDiff >= 0;
 
     return (
-        <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
+        <div className="min-h-screen bg-[#fafaf9] text-slate-900 selection:bg-emerald-700 selection:text-white">
             <Header />
 
             <SmoothWrapper>
-                <main className="container px-6 py-10 max-w-7xl mx-auto">
+                <main className="container px-4 sm:px-6 py-8 sm:py-12 max-w-7xl mx-auto">
                     {/* Header Banner */}
-                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 pb-8 border-b border-border/60">
+                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 pb-6 border-b border-slate-200">
                         <div>
-                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-extrabold uppercase tracking-widest mb-3">
-                                <TrendingUp className="h-3.5 w-3.5" />
-                                Market Intelligence & Trends
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-extrabold uppercase tracking-widest mb-3">
+                                <TrendingUp className="h-3.5 w-3.5 text-emerald-700" />
+                                Market Trends & Range Analysis
                             </div>
-                            <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-foreground">
+                            <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-slate-900">
                                 Commodity Analytics
                             </h1>
-                            <p className="text-muted-foreground mt-2 text-base max-w-xl font-medium">
-                                Comprehensive market pricing trends, historical range volatility, and sector analysis.
+                            <p className="text-slate-600 mt-2 text-sm sm:text-base max-w-xl font-medium">
+                                Track price movements, range volatility, and market trends across Kodagu & Hassan.
                             </p>
                         </div>
 
-                        <div className="flex items-center gap-3 bg-card border border-border/70 p-4 rounded-2xl shadow-sm">
+                        <div className="flex items-center gap-3 bg-white border border-slate-200 p-4 rounded-2xl shadow-xs">
                             <div className="flex flex-col">
-                                <span className="text-[10px] font-extrabold uppercase tracking-widest text-muted-foreground">Active Selection</span>
-                                <span className="text-lg font-bold text-foreground">{commodity.replace("_", " ")} ({district})</span>
+                                <span className="text-[10px] font-extrabold uppercase tracking-widest text-slate-500">Active Selection</span>
+                                <span className="text-base sm:text-lg font-black text-slate-900">{commodity.replace("_", " ")} ({district})</span>
                             </div>
-                            <div className={`ml-4 p-2 rounded-xl flex items-center gap-1 ${isUp ? "bg-emerald-500/10 text-emerald-600" : "bg-rose-500/10 text-rose-600"}`}>
+                            <div className={`ml-4 p-2 rounded-xl flex items-center gap-1 ${isUp ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-rose-50 text-rose-700 border border-rose-200"}`}>
                                 {isUp ? <ArrowUpRight className="h-5 w-5" /> : <ArrowDownRight className="h-5 w-5" />}
                                 <span className="text-xs font-black">₹{Math.abs(priceDiff)}</span>
                             </div>
@@ -142,33 +137,33 @@ export default async function HistoryPage(props: {
                         {/* Sidebar Filters */}
                         <div className="lg:col-span-1 space-y-6">
                             {/* Commodity Filter */}
-                            <Card className="border border-border/60 bg-card/80 backdrop-blur-lg shadow-sm rounded-2xl overflow-hidden">
-                                <CardHeader className="pb-3 px-6 pt-5 border-b border-border/40 bg-muted/30">
-                                    <CardTitle className="text-xs font-extrabold uppercase tracking-widest text-muted-foreground flex items-center justify-between">
+                            <Card className="border border-slate-200 bg-white shadow-xs rounded-2xl overflow-hidden">
+                                <CardHeader className="pb-3 px-5 pt-5 border-b border-slate-100 bg-slate-50">
+                                    <CardTitle className="text-xs font-black uppercase tracking-widest text-slate-600 flex items-center justify-between">
                                         <span>Select Commodity</span>
-                                        <Layers className="h-3.5 w-3.5" />
+                                        <Layers className="h-3.5 w-3.5 text-emerald-700" />
                                     </CardTitle>
                                 </CardHeader>
-                                <CardContent className="p-4 space-y-2">
+                                <CardContent className="p-3 space-y-2">
                                     {commodities.map((c) => {
                                         const isSelected = commodity === c.id;
                                         return (
                                             <Link
                                                 key={c.id}
                                                 href={`/history?commodity=${c.id}&district=${district}`}
-                                                className={`flex items-center justify-between p-3.5 rounded-xl text-sm font-semibold transition-all border ${
+                                                className={`flex items-center justify-between p-3.5 rounded-xl text-xs font-bold transition-all border ${
                                                     isSelected
-                                                        ? "bg-primary text-primary-foreground border-primary shadow-md shadow-primary/20 scale-[1.01]"
-                                                        : "bg-background/60 hover:bg-muted/60 border-border/50 text-foreground"
+                                                        ? "bg-emerald-700 text-white border-emerald-700 font-black shadow-sm"
+                                                        : "bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-800"
                                                 }`}
                                             >
                                                 <div className="flex flex-col">
                                                     <span>{c.name}</span>
-                                                    <span className={`text-[10px] font-normal ${isSelected ? "text-primary-foreground/80" : "text-muted-foreground"}`}>
+                                                    <span className={`text-[10px] font-normal ${isSelected ? "text-emerald-100" : "text-slate-500"}`}>
                                                         {c.unit}
                                                     </span>
                                                 </div>
-                                                {isSelected && <ShieldCheck className="h-4 w-4 text-primary-foreground" />}
+                                                {isSelected && <ShieldCheck className="h-4 w-4 text-white" />}
                                             </Link>
                                         );
                                     })}
@@ -176,29 +171,29 @@ export default async function HistoryPage(props: {
                             </Card>
 
                             {/* District Filter */}
-                            <Card className="border border-border/60 bg-card/80 backdrop-blur-lg shadow-sm rounded-2xl overflow-hidden">
-                                <CardHeader className="pb-3 px-6 pt-5 border-b border-border/40 bg-muted/30">
-                                    <CardTitle className="text-xs font-extrabold uppercase tracking-widest text-muted-foreground flex items-center justify-between">
+                            <Card className="border border-slate-200 bg-white shadow-xs rounded-2xl overflow-hidden">
+                                <CardHeader className="pb-3 px-5 pt-5 border-b border-slate-100 bg-slate-50">
+                                    <CardTitle className="text-xs font-black uppercase tracking-widest text-slate-600 flex items-center justify-between">
                                         <span>Select District</span>
-                                        <MapPin className="h-3.5 w-3.5" />
+                                        <MapPin className="h-3.5 w-3.5 text-emerald-700" />
                                     </CardTitle>
                                 </CardHeader>
-                                <CardContent className="p-4 space-y-2">
+                                <CardContent className="p-3 space-y-2">
                                     {districts.map((d) => {
                                         const isSelected = district === d.id;
                                         return (
                                             <Link
                                                 key={d.id}
                                                 href={`/history?commodity=${commodity}&district=${d.id}`}
-                                                className={`flex items-center justify-between p-3.5 rounded-xl text-sm font-semibold transition-all border ${
+                                                className={`flex items-center justify-between p-3.5 rounded-xl text-xs font-bold transition-all border ${
                                                     isSelected
-                                                        ? "bg-primary text-primary-foreground border-primary shadow-md shadow-primary/20 scale-[1.01]"
-                                                        : "bg-background/60 hover:bg-muted/60 border-border/50 text-foreground"
+                                                        ? "bg-emerald-700 text-white border-emerald-700 font-black shadow-sm"
+                                                        : "bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-800"
                                                 }`}
                                             >
                                                 <span>{d.name}</span>
-                                                <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${
-                                                    isSelected ? "bg-primary-foreground/20 text-primary-foreground" : "bg-muted text-muted-foreground"
+                                                <span className={`text-[10px] px-2 py-0.5 rounded-full font-black uppercase ${
+                                                    isSelected ? "bg-white/20 text-white" : "bg-slate-200 text-slate-700"
                                                 }`}>
                                                     {d.badge}
                                                 </span>
@@ -219,20 +214,20 @@ export default async function HistoryPage(props: {
                             />
 
                             {/* Historical Data Table */}
-                            <Card className="border border-border/60 bg-card/90 backdrop-blur-lg shadow-sm rounded-2xl overflow-hidden">
-                                <CardHeader className="pb-4 px-6 pt-6 border-b border-border/40 flex flex-row items-center justify-between">
+                            <Card className="border border-slate-200 bg-white shadow-xs rounded-2xl overflow-hidden">
+                                <CardHeader className="pb-4 px-6 pt-6 border-b border-slate-100 flex flex-row items-center justify-between bg-slate-50">
                                     <div>
-                                        <CardTitle className="text-lg font-bold text-foreground">Recent Daily Records</CardTitle>
-                                        <p className="text-xs text-muted-foreground mt-0.5">Recorded market closing prices</p>
+                                        <CardTitle className="text-base font-black text-slate-900">Recent Daily Records</CardTitle>
+                                        <p className="text-xs text-slate-500 mt-0.5 font-medium">Recorded market closing rates</p>
                                     </div>
-                                    <span className="text-xs font-bold text-muted-foreground bg-muted px-3 py-1 rounded-full border border-border/40">
-                                        {data.length} Data Points
+                                    <span className="text-xs font-bold text-slate-600 bg-white px-3 py-1 rounded-full border border-slate-200 shadow-xs">
+                                        {data.length} Records
                                     </span>
                                 </CardHeader>
                                 <CardContent className="p-0">
                                     <div className="overflow-x-auto">
-                                        <table className="w-full text-left text-sm">
-                                            <thead className="bg-muted/40 text-muted-foreground text-[10px] font-extrabold uppercase tracking-wider border-b border-border/40">
+                                        <table className="w-full text-left text-xs sm:text-sm">
+                                            <thead className="bg-slate-100 text-slate-600 text-[10px] font-black uppercase tracking-wider border-b border-slate-200">
                                                 <tr>
                                                     <th className="px-6 py-3.5">Date</th>
                                                     <th className="px-6 py-3.5">Commodity</th>
@@ -240,16 +235,16 @@ export default async function HistoryPage(props: {
                                                     <th className="px-6 py-3.5 text-right">Closing Rate</th>
                                                 </tr>
                                             </thead>
-                                            <tbody className="divide-y divide-border/30 font-medium">
+                                            <tbody className="divide-y divide-slate-100 font-medium">
                                                 {data.slice(-10).reverse().map((item, idx) => (
-                                                    <tr key={idx} className="hover:bg-muted/30 transition-colors">
-                                                        <td className="px-6 py-3.5 text-foreground font-semibold flex items-center gap-2">
-                                                            <Calendar className="h-3.5 w-3.5 text-primary opacity-70" />
+                                                    <tr key={idx} className="hover:bg-slate-50 transition-colors">
+                                                        <td className="px-6 py-3.5 text-slate-900 font-bold flex items-center gap-2">
+                                                            <Calendar className="h-3.5 w-3.5 text-emerald-700 opacity-80" />
                                                             {item.date}
                                                         </td>
-                                                        <td className="px-6 py-3.5 text-muted-foreground">{commodity.replace("_", " ")}</td>
-                                                        <td className="px-6 py-3.5 text-muted-foreground">{district}</td>
-                                                        <td className="px-6 py-3.5 text-right font-black text-foreground">
+                                                        <td className="px-6 py-3.5 text-slate-600">{commodity.replace("_", " ")}</td>
+                                                        <td className="px-6 py-3.5 text-slate-600">{district}</td>
+                                                        <td className="px-6 py-3.5 text-right font-black text-slate-900">
                                                             ₹{item.price.toLocaleString()}
                                                         </td>
                                                     </tr>

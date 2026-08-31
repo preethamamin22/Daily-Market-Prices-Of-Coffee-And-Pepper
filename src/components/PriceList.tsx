@@ -42,15 +42,15 @@ export function PriceList({ initialPrices, prevPrices }: PriceListProps) {
     return (
         <div className="space-y-10">
             {/* Filter & Search Bar */}
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4 max-w-4xl mx-auto bg-[#111a2e] p-3.5 rounded-2xl border border-[#1e2d4a] shadow-xl">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4 max-w-4xl mx-auto bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
                 {/* Sector Switch Tabs */}
-                <div className="flex items-center gap-1.5 bg-[#090e1a] p-1.5 rounded-xl w-full md:w-auto overflow-x-auto no-scrollbar">
+                <div className="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-xl w-full md:w-auto overflow-x-auto no-scrollbar">
                     <button
                         onClick={() => setActiveSector("ALL")}
                         className={`flex-1 md:flex-none px-4 py-2 text-xs font-black rounded-lg transition-all ${
                             activeSector === "ALL"
-                                ? "bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20"
-                                : "text-slate-300 hover:text-white hover:bg-white/5"
+                                ? "bg-white text-emerald-800 shadow-xs border border-slate-200"
+                                : "text-slate-600 hover:text-slate-900"
                         }`}
                     >
                         All Markets ({initialPrices.length})
@@ -59,8 +59,8 @@ export function PriceList({ initialPrices, prevPrices }: PriceListProps) {
                         onClick={() => setActiveSector("KODAGU")}
                         className={`flex-1 md:flex-none px-4 py-2 text-xs font-black rounded-lg transition-all ${
                             activeSector === "KODAGU"
-                                ? "bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20"
-                                : "text-slate-300 hover:text-white hover:bg-white/5"
+                                ? "bg-white text-emerald-800 shadow-xs border border-slate-200"
+                                : "text-slate-600 hover:text-slate-900"
                         }`}
                     >
                         Kodagu ({initialPrices.filter(p => p.district === "KODAGU").length})
@@ -69,8 +69,8 @@ export function PriceList({ initialPrices, prevPrices }: PriceListProps) {
                         onClick={() => setActiveSector("HASSAN")}
                         className={`flex-1 md:flex-none px-4 py-2 text-xs font-black rounded-lg transition-all ${
                             activeSector === "HASSAN"
-                                ? "bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20"
-                                : "text-slate-300 hover:text-white hover:bg-white/5"
+                                ? "bg-white text-emerald-800 shadow-xs border border-slate-200"
+                                : "text-slate-600 hover:text-slate-900"
                         }`}
                     >
                         Hassan ({initialPrices.filter(p => p.district === "HASSAN").length})
@@ -83,14 +83,14 @@ export function PriceList({ initialPrices, prevPrices }: PriceListProps) {
                     <Input
                         type="text"
                         placeholder="Search Arabica, Pepper..."
-                        className="pl-10 pr-10 py-2.5 rounded-xl border border-[#1e2d4a] bg-[#090e1a] text-white shadow-xs focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-xs font-bold placeholder:text-slate-500"
+                        className="pl-10 pr-10 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 shadow-xs focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 transition-all text-xs font-bold placeholder:text-slate-400"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
                     {searchQuery && (
                         <button
                             onClick={() => setSearchQuery("")}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-slate-800 rounded-md transition-colors z-10"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-slate-200 rounded-md transition-colors z-10"
                         >
                             <X className="h-3.5 w-3.5 text-slate-400" />
                         </button>
@@ -103,16 +103,16 @@ export function PriceList({ initialPrices, prevPrices }: PriceListProps) {
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="text-center py-16 border border-dashed border-[#1e2d4a] rounded-3xl bg-[#111a2e] max-w-xl mx-auto p-8"
+                    className="text-center py-16 border border-dashed border-slate-300 rounded-3xl bg-white max-w-xl mx-auto p-8 shadow-xs"
                 >
-                    <div className="h-12 w-12 rounded-full bg-emerald-500/10 text-emerald-400 mx-auto flex items-center justify-center mb-4 border border-emerald-500/20">
+                    <div className="h-12 w-12 rounded-full bg-emerald-50 text-emerald-700 mx-auto flex items-center justify-center mb-4 border border-emerald-200">
                         <SlidersHorizontal className="h-6 w-6" />
                     </div>
-                    <p className="text-sm font-black uppercase tracking-widest text-slate-200 mb-1">No Matching Commodities</p>
-                    <p className="text-xs text-slate-400 mb-6 font-medium">No market prices found for &quot;{searchQuery}&quot; in {activeSector} sector.</p>
+                    <p className="text-sm font-black uppercase tracking-widest text-slate-800 mb-1">No Matching Commodities</p>
+                    <p className="text-xs text-slate-500 mb-6 font-medium">No market prices found for &quot;{searchQuery}&quot; in {activeSector} sector.</p>
                     <button
                         onClick={() => { setSearchQuery(""); setActiveSector("ALL"); }}
-                        className="px-5 py-2.5 bg-emerald-500 text-slate-950 rounded-xl text-xs font-black uppercase tracking-wider hover:bg-emerald-400 transition-colors shadow-md"
+                        className="px-5 py-2.5 bg-emerald-700 text-white rounded-xl text-xs font-black uppercase tracking-wider hover:bg-emerald-800 transition-colors shadow-sm"
                     >
                         Reset All Filters
                     </button>
@@ -131,16 +131,16 @@ export function PriceList({ initialPrices, prevPrices }: PriceListProps) {
                         className="space-y-5"
                     >
                         <div className="flex items-center gap-3 px-1">
-                            <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                            <div className="p-2 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200">
                                 <Building2 className="h-4 w-4" />
                             </div>
                             <div>
-                                <h2 className="text-sm font-black uppercase tracking-widest text-white">
+                                <h2 className="text-sm font-black uppercase tracking-widest text-slate-900">
                                     Kodagu Sector Hub (ಕೊಡಗು)
                                 </h2>
-                                <p className="text-[11px] text-slate-400 font-medium">Madikeri & Virajpet Commodity Markets</p>
+                                <p className="text-[11px] text-slate-500 font-medium">Madikeri & Virajpet Commodity Markets</p>
                             </div>
-                            <div className="flex-1 h-[1px] bg-[#1e2d4a] ml-2" />
+                            <div className="flex-1 h-[1px] bg-slate-200 ml-2" />
                         </div>
                         <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             {kodaguPrices.map((p: PriceData) => (
@@ -168,16 +168,16 @@ export function PriceList({ initialPrices, prevPrices }: PriceListProps) {
                         className="space-y-5 pt-4"
                     >
                         <div className="flex items-center gap-3 px-1">
-                            <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                            <div className="p-2 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200">
                                 <Building2 className="h-4 w-4" />
                             </div>
                             <div>
-                                <h2 className="text-sm font-black uppercase tracking-widest text-white">
+                                <h2 className="text-sm font-black uppercase tracking-widest text-slate-900">
                                     Hassan Sector Hub (ಹಾಸನ)
                                 </h2>
-                                <p className="text-[11px] text-slate-400 font-medium">Sakleshpur & Belur Commodity Markets</p>
+                                <p className="text-[11px] text-slate-500 font-medium">Sakleshpur & Belur Commodity Markets</p>
                             </div>
-                            <div className="flex-1 h-[1px] bg-[#1e2d4a] ml-2" />
+                            <div className="flex-1 h-[1px] bg-slate-200 ml-2" />
                         </div>
                         <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             {hassanPrices.map((p: PriceData) => (
