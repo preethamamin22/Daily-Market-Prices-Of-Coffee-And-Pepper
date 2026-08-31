@@ -5,96 +5,80 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-sans), system-ui, -apple-system, sans-serif;
 
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: #0f172a;
+  --color-foreground: #f8fafc;
 
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
+  --color-card: #1e293b;
+  --color-card-foreground: #f8fafc;
 
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: #1e293b;
+  --color-popover-foreground: #f8fafc;
 
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: #10b981;
+  --color-primary-foreground: #022c22;
 
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: #0f766e;
+  --color-secondary-foreground: #ffffff;
 
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: #334155;
+  --color-muted-foreground: #94a3b8;
 
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: #047857;
+  --color-accent-foreground: #ffffff;
 
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive: #f43f5e;
+  --color-destructive-foreground: #ffffff;
 
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
+  --color-border: #334155;
+  --color-input: #334155;
+  --color-ring: #10b981;
 
-  --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
+  --radius-lg: 1rem;
+  --radius-md: 0.75rem;
+  --radius-sm: 0.5rem;
 }
 
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
-  --card: #ffffff;
-  --card-foreground: #0f172a;
-  --popover: #ffffff;
-  --popover-foreground: #0f172a;
-  --primary: #059669;
-  --primary-foreground: #ffffff;
-  --secondary: #f1f5f9;
-  --secondary-foreground: #0f172a;
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
-  --accent: #e2e8f0;
-  --accent-foreground: #0f172a;
-  --destructive: #e11d48;
-  --destructive-foreground: #ffffff;
-  --border: #e2e8f0;
-  --input: #e2e8f0;
-  --ring: #059669;
-  --radius: 1rem;
-}
-
-.dark {
-  --background: #090d16;
+  --background: #0b1329;
   --foreground: #f8fafc;
-  --card: #111827;
+  --card: #131f37;
   --card-foreground: #f8fafc;
-  --popover: #111827;
+  --popover: #131f37;
   --popover-foreground: #f8fafc;
   --primary: #10b981;
-  --primary-foreground: #090d16;
+  --primary-foreground: #022c22;
   --secondary: #1e293b;
   --secondary-foreground: #f8fafc;
   --muted: #1e293b;
   --muted-foreground: #94a3b8;
-  --accent: #1e293b;
-  --accent-foreground: #f8fafc;
+  --accent: #047857;
+  --accent-foreground: #ffffff;
   --destructive: #f43f5e;
-  --destructive-foreground: #f8fafc;
+  --destructive-foreground: #ffffff;
   --border: #1e293b;
   --input: #1e293b;
   --ring: #10b981;
+  --radius: 1rem;
 }
 
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
+/* Custom visual utilities */
+.glass-panel {
+  background: rgba(19, 31, 55, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
 
-  body {
-    @apply bg-background text-foreground antialiased tracking-tight min-h-screen;
-    font-feature-settings: "cv02", "cv03", "cv04", "ss01";
-  }
+.gradient-text {
+  background: linear-gradient(135deg, #10b981 0%, #38bdf8 50%, #a855f7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-glow {
+  background: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.15) 0%, rgba(11, 19, 41, 0) 70%);
 }
 
 /* Custom scrollbar */
@@ -104,14 +88,14 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--background);
+  background: #0b1329;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border);
+  background: #1e293b;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
+  background: #10b981;
 }
